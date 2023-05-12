@@ -7,9 +7,13 @@ import hu.seegame.SeeGameCeo.Services.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Collections;
 
 @RestController
 public class UserController {
@@ -21,20 +25,20 @@ public class UserController {
     private UserRepository userRepository;
 
     @PostMapping("/registration")
-    public String registration(@RequestBody User user){
+    public ResponseEntity<Object> registration(@RequestBody User user){
         return userService.registrationUser(user);
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody User user, HttpServletResponse response){
+    public ResponseEntity<Object> login(@RequestBody User user, HttpServletResponse response){
         String username = user.getUsername();
         String password = user.getPassword();
 
-        String bejelentkezett = userService.loginUser(username, password);
+        ResponseEntity<Object> bejelentkezett = userService.loginUser(username, password);
 
         User felhasznalo = userRepository.findByUsername(username);
 
-        if (bejelentkezett.equals("loggedin")){
+        if (bejelentkezett.getStatusCode() == HttpStatus.OK){
             String jogosultsag = felhasznalo.getPermission();
             int id = felhasznalo.getId();
             String usernamebydb = felhasznalo.getUsername();
@@ -44,7 +48,7 @@ public class UserController {
 
             Cookie cookie = new Cookie("user", encrypCookie);
             response.addCookie(cookie);
-            return String.valueOf(value);
+            return new ResponseEntity<>(Collections.singletonMap("cookie", cookie), HttpStatus.OK);
         }
 
         return bejelentkezett;

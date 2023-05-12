@@ -3,10 +3,12 @@ package hu.seegame.SeeGameCeo.Services;
 import hu.seegame.SeeGameCeo.Models.User;
 import hu.seegame.SeeGameCeo.Others.Encrypt;
 import hu.seegame.SeeGameCeo.Repositories.UserRepository;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 
 @Service
 public class UserService {
@@ -14,7 +16,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public String registrationUser(User user){
+    public ResponseEntity<Object> registrationUser(User user){
 
         String username = user.getUsername();
 
@@ -26,44 +28,39 @@ public class UserService {
         User talaltusername = userRepository.findByUsername(username);
         User talaltaccid = userRepository.findByAccountid(user.getAccountid());
 
-        if (talaltusername == null && talaltaccid == null){
-            userRepository.save(user);
-            return "Sikeres regisztráció.";
-        }
-
         if (talaltusername != null && talaltusername.getUsername().equals(username)){
-            return "Már létezik ilyen felhasználónévvel fiók.";
+            return new ResponseEntity<>(Collections.singletonMap("message", "Már létezik ilyen felhasználónévvel fiók."), HttpStatus.CONFLICT);
         }
 
         if (talaltaccid != null && talaltaccid.getAccountid() == user.getAccountid()){
-            return "Ez az accountId már regisztrálva van.";
+            return new ResponseEntity<>(Collections.singletonMap("message", "Az AccounID már regisztrálva van."), HttpStatus.CONFLICT);
         }
 
         userRepository.save(user);
-        return "Sikeres regisztráció.";
+        return new ResponseEntity<>(Collections.singletonMap("message", "Sikeres regisztráció."), HttpStatus.OK);
 
     }  //Felhasználó regisztráció
 
-    public String loginUser(String username, String password){
+    public ResponseEntity<Object> loginUser(String username, String password){
 
         if (username.isEmpty() || password.isEmpty()){
-            return "A mezők kitöltése kötelező.";
+            return new ResponseEntity<>(Collections.singletonMap("message", "Mezők kitöltése kötelező."), HttpStatus.CONFLICT);
         }//Ha üres akkor nem enged tovább
 
         User user = userRepository.findByUsername(username);
 
         if (user == null){
-            return "Nem létezik ilyen felhasználónévvel regisztrált fiók.";
+            return new ResponseEntity<>(Collections.singletonMap("message", "Nem létezik ilyen felhasználónévvel fiók."), HttpStatus.CONFLICT);
         }//Nem létezik ilyen fiók
 
         String visszafejtettPass = Encrypt.decrypt(user.getPassword());
 
         if (user.getUsername().equals(username) && visszafejtettPass.equals(password)){
-            return "loggedin"; //bejelentkezett
+            return new ResponseEntity<>(Collections.singletonMap("bejelentkezett", "Sikeres bejelentkezés."), HttpStatus.OK);
         }else {
-           return "Rossz felhasználónév és jelszó kombináció.";
+            return new ResponseEntity<>(Collections.singletonMap("message", "Rossz felhasználónév és jelszó kombináció."), HttpStatus.CONFLICT);
         }
 
-    }
+    } //felhasználó bejelentkezés
 
 }

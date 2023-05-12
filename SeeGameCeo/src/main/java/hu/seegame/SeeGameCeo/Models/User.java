@@ -13,6 +13,8 @@ public class User {
     @SequenceGenerator(name = "generator", sequenceName = "generator", allocationSize = 1, initialValue = 1000)
     private int id;
     private String username;
+
+    private String icnev;
     private String email;
     private String password;
     private int accountid;
@@ -83,11 +85,33 @@ public class User {
         this.permission = permission;
     }
 
+    public String getIcnev() {
+        return icnev;
+    }
+
+    public void setIcnev(String icnev) {
+        this.icnev = icnev;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id && accountid == user.accountid && Objects.equals(username, user.username) && Objects.equals(icnev, user.icnev) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(created_at, user.created_at) && Objects.equals(permission, user.permission);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, icnev, email, password, accountid, created_at, permission);
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
+                ", icnev='" + icnev + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", accountid=" + accountid +
@@ -95,18 +119,4 @@ public class User {
                 ", permission='" + permission + '\'' +
                 '}';
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
-        return Objects.equals(username, user.username);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(username);
-    }
-
 }
