@@ -23,3 +23,7 @@
 ### Felhasználó műhelyei amiben dolgozik:
 
 * http://localhost:9000/workshopiworkin
+
+### Műhelyhez munka hozzáadás
+
+* http://localhost:9000/createjob/{id}
