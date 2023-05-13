@@ -7,7 +7,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    User findByUsername(String username);
+    User findByUsername(String username);//keresés felhasználónév alapján
 
-    User findByAccountid(int accid);
+    User findByAccountid(int accid);//keresés accountid alapján
+
+    User findByIcnev(String name);//keresés ic név alapján
 }
