@@ -24,16 +24,29 @@ public class WorkshopService {
         Workshop tulajid = workshopRepository.findByTulajId(workshop.getTulajId());
 
         if (muhelyidvan != null){
-            return new ResponseEntity<>(Collections.singletonMap("message", "Már létezik ezzel a műhelyid-val műhely."), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(Collections.singletonMap("message", "Már létezik ezzel a műhelyid-val műhely."), HttpStatus.OK);
         }
 
         if (tulajid != null){
-            return new ResponseEntity<>(Collections.singletonMap("message", "Már van egy műhely a tulajdonodban."), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(Collections.singletonMap("message", "Már van egy műhely a tulajdonodban."), HttpStatus.OK);
 
         }
 
         workshopRepository.save(workshop);
         return new ResponseEntity<>(Collections.singletonMap("message", "Sikeres műhely hozzáadás."), HttpStatus.OK);
+
+    }//Műhely létrehozása
+
+    public ResponseEntity<Object> getMyWorkshop(int tulajid){
+
+        Workshop workshop = workshopRepository.findByTulajId(tulajid);
+
+        if (workshop != null){
+            return new ResponseEntity<>(Collections.singletonMap("message", workshop), HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(Collections.singletonMap("message", "Nincs műhelye"), HttpStatus.OK);
+        }
+
 
     }
 
