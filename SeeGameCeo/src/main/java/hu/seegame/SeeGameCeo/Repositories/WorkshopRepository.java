@@ -2,9 +2,11 @@ package hu.seegame.SeeGameCeo.Repositories;
 
 import hu.seegame.SeeGameCeo.Models.Workshop;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface WorkshopRepository extends JpaRepository<Workshop, Integer> {
 
     Workshop findByMuhelyid(int muhelyid);//keresés műhely id alapján
