@@ -16,6 +16,6 @@
 
 * http://localhost:9000/createworkshop
 
-### A bejelentkezett felhasználó saját műhelye
+### A bejelentkezett felhasználó saját műhelye:
 
 * http://localhost:9000/getmyworkshop
