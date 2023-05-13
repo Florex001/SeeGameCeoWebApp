@@ -22,4 +22,4 @@
 
 ### Felhasználó műhelyei amiben dolgozik:
 
-* localhost:9000/workshopiworkin
+* http://localhost:9000/workshopiworkin
