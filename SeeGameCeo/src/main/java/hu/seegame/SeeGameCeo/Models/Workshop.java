@@ -26,18 +26,6 @@ public class Workshop {
     private String dolgozo10;
     private String dolgozo11;
     private String dolgozo12;
-    private String jog1;
-    private String jog2;
-    private String jog3;
-    private String jog4;
-    private String jog5;
-    private String jog6;
-    private String jog7;
-    private String jog8;
-    private String jog9;
-    private String jog10;
-    private String jog11;
-    private String jog12;
     private LocalDateTime lejarat;
     private String status;
 
@@ -169,102 +157,6 @@ public class Workshop {
         this.dolgozo12 = dolgozo12;
     }
 
-    public String getJog1() {
-        return jog1;
-    }
-
-    public void setJog1(String jog1) {
-        this.jog1 = jog1;
-    }
-
-    public String getJog2() {
-        return jog2;
-    }
-
-    public void setJog2(String jog2) {
-        this.jog2 = jog2;
-    }
-
-    public String getJog3() {
-        return jog3;
-    }
-
-    public void setJog3(String jog3) {
-        this.jog3 = jog3;
-    }
-
-    public String getJog4() {
-        return jog4;
-    }
-
-    public void setJog4(String jog4) {
-        this.jog4 = jog4;
-    }
-
-    public String getJog5() {
-        return jog5;
-    }
-
-    public void setJog5(String jog5) {
-        this.jog5 = jog5;
-    }
-
-    public String getJog6() {
-        return jog6;
-    }
-
-    public void setJog6(String jog6) {
-        this.jog6 = jog6;
-    }
-
-    public String getJog7() {
-        return jog7;
-    }
-
-    public void setJog7(String jog7) {
-        this.jog7 = jog7;
-    }
-
-    public String getJog8() {
-        return jog8;
-    }
-
-    public void setJog8(String jog8) {
-        this.jog8 = jog8;
-    }
-
-    public String getJog9() {
-        return jog9;
-    }
-
-    public void setJog9(String jog9) {
-        this.jog9 = jog9;
-    }
-
-    public String getJog10() {
-        return jog10;
-    }
-
-    public void setJog10(String jog10) {
-        this.jog10 = jog10;
-    }
-
-    public String getJog11() {
-        return jog11;
-    }
-
-    public void setJog11(String jog11) {
-        this.jog11 = jog11;
-    }
-
-    public String getJog12() {
-        return jog12;
-    }
-
-    public void setJog12(String jog12) {
-        this.jog12 = jog12;
-    }
-
     public LocalDateTime getLejarat() {
         return lejarat;
     }
@@ -286,11 +178,11 @@ public class Workshop {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Workshop workshop = (Workshop) o;
-        return id == workshop.id && muhelyid == workshop.muhelyid && tulajId == workshop.tulajId && Objects.equals(muhelynev, workshop.muhelynev) && Objects.equals(dolgozo1, workshop.dolgozo1) && Objects.equals(dolgozo2, workshop.dolgozo2) && Objects.equals(dolgozo3, workshop.dolgozo3) && Objects.equals(dolgozo4, workshop.dolgozo4) && Objects.equals(dolgozo5, workshop.dolgozo5) && Objects.equals(dolgozo6, workshop.dolgozo6) && Objects.equals(dolgozo7, workshop.dolgozo7) && Objects.equals(dolgozo8, workshop.dolgozo8) && Objects.equals(dolgozo9, workshop.dolgozo9) && Objects.equals(dolgozo10, workshop.dolgozo10) && Objects.equals(dolgozo11, workshop.dolgozo11) && Objects.equals(dolgozo12, workshop.dolgozo12) && Objects.equals(jog1, workshop.jog1) && Objects.equals(jog2, workshop.jog2) && Objects.equals(jog3, workshop.jog3) && Objects.equals(jog4, workshop.jog4) && Objects.equals(jog5, workshop.jog5) && Objects.equals(jog6, workshop.jog6) && Objects.equals(jog7, workshop.jog7) && Objects.equals(jog8, workshop.jog8) && Objects.equals(jog9, workshop.jog9) && Objects.equals(jog10, workshop.jog10) && Objects.equals(jog11, workshop.jog11) && Objects.equals(jog12, workshop.jog12) && Objects.equals(lejarat, workshop.lejarat) && Objects.equals(status, workshop.status);
+        return id == workshop.id && muhelyid == workshop.muhelyid && tulajId == workshop.tulajId && Objects.equals(muhelynev, workshop.muhelynev) && Objects.equals(dolgozo1, workshop.dolgozo1) && Objects.equals(dolgozo2, workshop.dolgozo2) && Objects.equals(dolgozo3, workshop.dolgozo3) && Objects.equals(dolgozo4, workshop.dolgozo4) && Objects.equals(dolgozo5, workshop.dolgozo5) && Objects.equals(dolgozo6, workshop.dolgozo6) && Objects.equals(dolgozo7, workshop.dolgozo7) && Objects.equals(dolgozo8, workshop.dolgozo8) && Objects.equals(dolgozo9, workshop.dolgozo9) && Objects.equals(dolgozo10, workshop.dolgozo10) && Objects.equals(dolgozo11, workshop.dolgozo11) && Objects.equals(dolgozo12, workshop.dolgozo12) && Objects.equals(lejarat, workshop.lejarat) && Objects.equals(status, workshop.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, muhelyid, tulajId, muhelynev, dolgozo1, dolgozo2, dolgozo3, dolgozo4, dolgozo5, dolgozo6, dolgozo7, dolgozo8, dolgozo9, dolgozo10, dolgozo11, dolgozo12, jog1, jog2, jog3, jog4, jog5, jog6, jog7, jog8, jog9, jog10, jog11, jog12, lejarat, status);
+        return Objects.hash(id, muhelyid, tulajId, muhelynev, dolgozo1, dolgozo2, dolgozo3, dolgozo4, dolgozo5, dolgozo6, dolgozo7, dolgozo8, dolgozo9, dolgozo10, dolgozo11, dolgozo12, lejarat, status);
     }
 }
