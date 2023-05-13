@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collections;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000/", allowCredentials = "true")
 public class UserController {
 
     @Autowired
@@ -42,7 +44,8 @@ public class UserController {
             String jogosultsag = felhasznalo.getPermission();
             int id = felhasznalo.getId();
             String usernamebydb = felhasznalo.getUsername();
-            String value = id + "-" + usernamebydb + "-" + jogosultsag;
+            String icnev = felhasznalo.getIcnev();
+            String value = id + "-" + usernamebydb + "-" + jogosultsag + "-" + icnev;
 
             String encrypCookie = Encrypt.encrypt(value);
 
