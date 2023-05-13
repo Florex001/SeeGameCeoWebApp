@@ -31,6 +31,7 @@ public class WorkshopController {
                     String[] parts = decryptedValue.split("-");
                     if (parts.length == 4) {
                         String id = parts[0];
+                        cookie.setHttpOnly(true);
 
                         ResponseEntity<Object> hozzadas = workshopService.createWorkshop(workshop, Integer.parseInt(id));
 
@@ -56,6 +57,7 @@ public class WorkshopController {
                     String decryptedValue = Encrypt.decrypt(encryptedValue);
                     String[] parts = decryptedValue.split("-");
                     if (parts.length == 4) {
+                        cookie.setHttpOnly(true);
                         String id = parts[0];
 
                         ResponseEntity<Object> sajatmuhelye = workshopService.getMyWorkshop(Integer.parseInt(id));

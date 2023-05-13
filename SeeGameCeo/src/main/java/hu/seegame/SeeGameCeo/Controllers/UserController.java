@@ -50,6 +50,7 @@ public class UserController {
             String encrypCookie = Encrypt.encrypt(value);
 
             Cookie cookie = new Cookie("user", encrypCookie);
+            cookie.setHttpOnly(true);
             response.addCookie(cookie);
             return new ResponseEntity<>(Collections.singletonMap("cookie", cookie), HttpStatus.OK);
         }
