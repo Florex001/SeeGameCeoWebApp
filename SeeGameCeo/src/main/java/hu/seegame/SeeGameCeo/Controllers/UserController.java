@@ -29,7 +29,7 @@ public class UserController {
     @PostMapping("/registration")
     public ResponseEntity<Object> registration(@RequestBody User user){
         return userService.registrationUser(user);
-    }
+    }//felhasználó regisztrálás
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody User user, HttpServletResponse response){
@@ -56,6 +56,6 @@ public class UserController {
         }
 
         return bejelentkezett;
-    }
+    }//bejelentkezés
 
 }
