@@ -8,13 +8,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000/", allowCredentials = "true")
 public class WorkshopController {
 
     @Autowired
@@ -30,7 +29,7 @@ public class WorkshopController {
                     String encryptedValue = cookie.getValue();
                     String decryptedValue = Encrypt.decrypt(encryptedValue);
                     String[] parts = decryptedValue.split("-");
-                    if (parts.length == 3) {
+                    if (parts.length == 4) {
                         String id = parts[0];
 
                         ResponseEntity<Object> hozzadas = workshopService.createWorkshop(workshop, Integer.parseInt(id));
@@ -43,6 +42,30 @@ public class WorkshopController {
 
         return new ResponseEntity<>(Collections.singletonMap("message", "Jelentkezz be."), HttpStatus.BAD_REQUEST);
 
+    }
+
+    @GetMapping("/getmyworkshop")
+    public ResponseEntity<Object> getMyWorkshop(HttpServletRequest request){
+
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("user")) {
+                    String encryptedValue = cookie.getValue();
+                    String decryptedValue = Encrypt.decrypt(encryptedValue);
+                    String[] parts = decryptedValue.split("-");
+                    if (parts.length == 4) {
+                        String id = parts[0];
+
+                        ResponseEntity<Object> sajatmuhelye = workshopService.getMyWorkshop(Integer.parseInt(id));
+
+                        return sajatmuhelye;
+                    }
+                }
+            }
+        }
+        return new ResponseEntity<>(Collections.singletonMap("message", "Jelentkezz be."), HttpStatus.OK);
     }
 
 }
