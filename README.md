@@ -10,6 +10,10 @@
 
 * http://localhost:9000/login
 
+### Ic nevek:
+
+* http://localhost:9000/getallicname
+
 ## Műhelyhez kapcsolódó útvonalak:
 
 ### Műhely hozzáadása:
