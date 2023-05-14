@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,37 +25,71 @@ public class JobService {
     public ResponseEntity<Object> createJob(int muhelyid, Job job, String icnev, int userid){
 
         List<Workshop> muhelybedolgozik = workshopRepository.findByDolgozo1OrDolgozo2OrDolgozo3OrDolgozo4OrDolgozo5OrDolgozo6OrDolgozo7OrDolgozo8OrDolgozo9OrDolgozo10OrDolgozo11OrDolgozo12(icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev);
-        Workshop ove = workshopRepository.findByTulajId(userid);
         Optional<Workshop> workshop = workshopRepository.findById(muhelyid);
+        Workshop ove = workshopRepository.findByTulajId(userid);
+
         List<Job> munkak = jobRepository.findByMuhelyId(muhelyid);
 
-        if (munkak.size() >= 2 && munkak.get(0).getStatus().equals("aktiv") && munkak.get(1).getStatus().equals("aktiv")){
-            return new ResponseEntity<>(Collections.singletonMap("error", "Csak két darab elválalt autó lehet a műhelyben."), HttpStatus.OK);
-        }
 
         if (workshop.isEmpty()){
             return new ResponseEntity<>(Collections.singletonMap("error", "Nincs ilyen műhely."), HttpStatus.OK);
         }
 
-        for (Workshop elem : muhelybedolgozik){
-            if (elem.getId() != muhelyid && ove.getId() != muhelyid){
-                return new ResponseEntity<>(Collections.singletonMap("error", "Nem vagy a műhely tulajdonosa, és nem is dolgozol benne."), HttpStatus.OK);
+        int muhelybenid = 0;
+
+        if (!muhelybedolgozik.isEmpty()){
+            for (Workshop elem : muhelybedolgozik){
+                if (elem.getId() == muhelyid){
+                    System.out.println(elem.getId());
+                    muhelybenid = elem.getId();
+                }
             }
         }
 
-        int autoar = job.getAutoar();
+        if (!muhelybedolgozik.isEmpty() && muhelybenid == muhelyid){
 
-        int anyagkoltseg = (int) (autoar * 0.1);
+            if (munkak.size() >= 2 && munkak.get(0).getStatus().equals("aktiv") && munkak.get(1).getStatus().equals("aktiv")){
+                return new ResponseEntity<>(Collections.singletonMap("error", "Csak két darab elválalt autó lehet a műhelyben."), HttpStatus.OK);
+            }
 
-        int osszfizetes = autoar - anyagkoltseg;
+            int autoar = job.getAutoar();
+
+            int anyagkoltseg = (int) (autoar * 0.1);
+
+            int osszfizetes = autoar - anyagkoltseg;
 
 
-        job.setAnyagkoltseg(anyagkoltseg);
-        job.setMuhelyId(muhelyid);
-        job.setOsszfizetes(osszfizetes);
-        job.setStatus("aktiv");
-        jobRepository.save(job);
-        return new ResponseEntity<>(Collections.singletonMap("message", "Sikeresen létrehozta az aktuális munkát."), HttpStatus.OK);
+            job.setAnyagkoltseg(anyagkoltseg);
+            job.setMuhelyId(muhelyid);
+            job.setOsszfizetes(osszfizetes);
+            job.setStatus("aktiv");
+            jobRepository.save(job);
+            return new ResponseEntity<>(Collections.singletonMap("message", "Sikeresen létrehozta az aktuális munkát."), HttpStatus.OK);
+        }
+
+        if (ove != null && ove.getId() == muhelyid){
+
+            if (munkak.size() >= 2 && munkak.get(0).getStatus().equals("aktiv") && munkak.get(1).getStatus().equals("aktiv")){
+                return new ResponseEntity<>(Collections.singletonMap("error", "Csak két darab elválalt autó lehet a műhelyben."), HttpStatus.OK);
+            }
+
+            int autoar = job.getAutoar();
+
+            int anyagkoltseg = (int) (autoar * 0.1);
+
+            int osszfizetes = autoar - anyagkoltseg;
+
+
+            job.setAnyagkoltseg(anyagkoltseg);
+            job.setMuhelyId(muhelyid);
+            job.setOsszfizetes(osszfizetes);
+            job.setStatus("aktiv");
+            jobRepository.save(job);
+            return new ResponseEntity<>(Collections.singletonMap("message", "Sikeresen létrehozta az aktuális munkát."), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(Collections.singletonMap("message", "Nem dolgozol a műhelyben."), HttpStatus.OK);
+
     }
 
 }

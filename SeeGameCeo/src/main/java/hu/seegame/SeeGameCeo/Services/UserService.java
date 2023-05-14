@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -27,13 +29,18 @@ public class UserService {
 
         User talaltusername = userRepository.findByUsername(username);
         User talaltaccid = userRepository.findByAccountid(user.getAccountid());
+        User talalticnev = userRepository.findByIcnev(user.getIcnev());
+
+        if (talalticnev != null){
+            return new ResponseEntity<>(Collections.singletonMap("message", "Már létezik ilyen ic névvel fiók."), HttpStatus.OK);
+        }
 
         if (talaltusername != null && talaltusername.getUsername().equals(username)){
-            return new ResponseEntity<>(Collections.singletonMap("message", "Már létezik ilyen felhasználónévvel fiók."), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(Collections.singletonMap("message", "Már létezik ilyen felhasználónévvel fiók."), HttpStatus.OK);
         }
 
         if (talaltaccid != null && talaltaccid.getAccountid() == user.getAccountid()){
-            return new ResponseEntity<>(Collections.singletonMap("message", "Az AccounID már regisztrálva van."), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(Collections.singletonMap("message", "Az AccounID már regisztrálva van."), HttpStatus.OK);
         }
 
         userRepository.save(user);
@@ -62,5 +69,17 @@ public class UserService {
         }
 
     } //felhasználó bejelentkezés
+
+    public ResponseEntity<Object> getAllIcname(){
+        List<User> felhasznalok = userRepository.findAll();
+
+        List<String> icnev = new ArrayList<>();
+
+        for (User elem : felhasznalok){
+            icnev.add(elem.getIcnev());
+        }
+
+        return new ResponseEntity<>(Collections.singletonMap("message", icnev), HttpStatus.OK);
+    }
 
 }

@@ -5,14 +5,12 @@ import hu.seegame.SeeGameCeo.Others.Encrypt;
 import hu.seegame.SeeGameCeo.Repositories.UserRepository;
 import hu.seegame.SeeGameCeo.Services.UserService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 
@@ -57,5 +55,27 @@ public class UserController {
 
         return bejelentkezett;
     }//bejelentkezés
+
+    @GetMapping("/getallicname")
+    public ResponseEntity<Object> getAllIcnev(HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("user")) {
+                    String encryptedValue = cookie.getValue();
+                    String decryptedValue = Encrypt.decrypt(encryptedValue);
+                    String[] parts = decryptedValue.split("-");
+                    if (parts.length == 4) {
+                        cookie.setHttpOnly(true);
+                        String id = parts[0];
+
+                        return userService.getAllIcname();
+                    }
+                }
+            }
+        }
+        return new ResponseEntity<>(Collections.singletonMap("message", "Jelentkezz be."), HttpStatus.OK);
+    }
 
 }
