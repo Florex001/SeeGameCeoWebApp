@@ -8,9 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -73,13 +71,17 @@ public class UserService {
     public ResponseEntity<Object> getAllIcname(){
         List<User> felhasznalok = userRepository.findAll();
 
-        List<String> icnev = new ArrayList<>();
+        List<Map<String, String>> icnevList = new ArrayList<>();
 
         for (User elem : felhasznalok){
-            icnev.add(elem.getIcnev());
+            Map<String, String> icnevMap = new HashMap<>();
+            icnevMap.put("label", elem.getIcnev());
+            icnevMap.put("value", elem.getIcnev());
+            icnevList.add(icnevMap);
         }
 
-        return new ResponseEntity<>(Collections.singletonMap("message", icnev), HttpStatus.OK);
+        return new ResponseEntity<>(icnevList, HttpStatus.OK);
+
     }//Összes ic név lekérése
 
 }

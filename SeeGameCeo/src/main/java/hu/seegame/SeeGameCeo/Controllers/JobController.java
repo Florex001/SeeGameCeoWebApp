@@ -45,4 +45,30 @@ public class JobController {
         return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.BAD_REQUEST);
     }//az adott műhelyhez létre hoz egy munkát. egyszerre 2 aktiv munka lehet egy műhelyben
 
+    @GetMapping("/getworkbyworkshop/{id}")
+    public ResponseEntity<Object> getWorkByWorkshop(@PathVariable int id, HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("user")) {
+                    String encryptedValue = cookie.getValue();
+                    String decryptedValue = Encrypt.decrypt(encryptedValue);
+                    String[] parts = decryptedValue.split("-");
+                    if (parts.length == 4) {
+                        String userid = parts[0];
+                        String icnev = parts[3];
+                        cookie.setHttpOnly(true);
+
+                        ResponseEntity<Object> munkak = jobService.getJobByMuhelyAktiv(id, icnev, Integer.parseInt(userid));
+
+                        return munkak;
+                    }
+                }
+            }
+        }
+
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.BAD_REQUEST);
+    }//Műhelyhez tartozó munkák le kérdezése
+
 }

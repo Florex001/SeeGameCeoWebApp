@@ -1,14 +1,17 @@
 package hu.seegame.SeeGameCeo.Services;
 
 import hu.seegame.SeeGameCeo.Models.Job;
+import hu.seegame.SeeGameCeo.Models.User;
 import hu.seegame.SeeGameCeo.Models.Workshop;
 import hu.seegame.SeeGameCeo.Repositories.JobRepository;
+import hu.seegame.SeeGameCeo.Repositories.UserRepository;
 import hu.seegame.SeeGameCeo.Repositories.WorkshopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -22,11 +25,15 @@ public class JobService {
     @Autowired
     private WorkshopRepository workshopRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public ResponseEntity<Object> createJob(int muhelyid, Job job, String icnev, int userid){
 
         List<Workshop> muhelybedolgozik = workshopRepository.findByDolgozo1OrDolgozo2OrDolgozo3OrDolgozo4OrDolgozo5OrDolgozo6OrDolgozo7OrDolgozo8OrDolgozo9OrDolgozo10OrDolgozo11OrDolgozo12(icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev);
         Optional<Workshop> workshop = workshopRepository.findById(muhelyid);
         List<Workshop> ove = workshopRepository.findByTulajId(userid);
+        Optional<User> user = userRepository.findById(userid);
 
         List<Job> munkak = jobRepository.findByMuhelyId(muhelyid);
 
@@ -39,7 +46,7 @@ public class JobService {
 
         if (!muhelybedolgozik.isEmpty()){
             for (Workshop elem : muhelybedolgozik){
-                if (elem.getId() == muhelyid){
+                if (elem.getId() == muhelyid && elem.getStatus().equals("aktiv")){
                     muhelyben = elem;
                 }
             }
@@ -71,6 +78,7 @@ public class JobService {
             job.setAnyagkoltseg(anyagkoltseg);
             job.setMuhelyId(muhelyid);
             job.setOsszfizetes(osszfizetes);
+            job.setElvalalta(user.get().getIcnev());
             job.setStatus("aktiv");
             jobRepository.save(job);
             return new ResponseEntity<>(Collections.singletonMap("message", "Sikeresen létrehozta az aktuális munkát."), HttpStatus.OK);
@@ -113,6 +121,7 @@ public class JobService {
             job.setAnyagkoltseg(anyagkoltseg);
             job.setMuhelyId(muhelyid);
             job.setOsszfizetes(osszfizetes);
+            job.setElvalalta(user.get().getIcnev());
             job.setStatus("aktiv");
             jobRepository.save(job);
             return new ResponseEntity<>(Collections.singletonMap("message", "Sikeresen létrehozta az aktuális munkát."), HttpStatus.OK);
@@ -121,5 +130,69 @@ public class JobService {
         return new ResponseEntity<>(Collections.singletonMap("error", "Nem dolgozol a műhelyben, vagy a műhely törölve lett."), HttpStatus.OK);
 
     }//Fényező munka hozzáadása
+    
+    public ResponseEntity<Object> getJobByMuhelyAktiv(int muhelyid, String icnev, int userid){
+        
+        List<Workshop> muhelybedolgozik = workshopRepository.findByDolgozo1OrDolgozo2OrDolgozo3OrDolgozo4OrDolgozo5OrDolgozo6OrDolgozo7OrDolgozo8OrDolgozo9OrDolgozo10OrDolgozo11OrDolgozo12(icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev);
+        Optional<Workshop> workshop = workshopRepository.findById(muhelyid);
+        List<Workshop> ove = workshopRepository.findByTulajId(userid);
+        List<Job> talalt = jobRepository.findByMuhelyId(muhelyid);
+
+
+        if (workshop.isEmpty()){
+            return new ResponseEntity<>(Collections.singletonMap("error", "Nincs ilyen műhely."), HttpStatus.OK);
+        }
+
+        Workshop muhelyben = null;
+
+        if (!muhelybedolgozik.isEmpty()){
+            for (Workshop elem : muhelybedolgozik){
+                if (elem.getId() == muhelyid && elem.getStatus().equals("aktiv")){
+                    muhelyben = elem;
+                }
+            }
+        }
+
+        if (muhelyben != null && muhelyben.getId() == muhelyid && muhelyben.getStatus().equals("aktiv")) {
+            
+            List<Job> aktivmunkak = new ArrayList<>();
+            
+            for (Job elem: talalt){
+                if (elem.getStatus().equals("aktiv")){
+                    aktivmunkak.add(elem);
+                }
+            }
+
+            
+            return new ResponseEntity<>(Collections.singletonMap("message", aktivmunkak), HttpStatus.OK);
+        }
+
+        Workshop sajat = null;
+
+        if (ove != null){
+            for (Workshop elem : ove){
+                if (elem.getStatus().equals("aktiv")){
+                    sajat = elem;
+                }
+            }
+        }
+
+
+        if (sajat != null && sajat.getId() == muhelyid && sajat.getStatus().equals("aktiv")){
+
+            List<Job> aktivmunkak = new ArrayList<>();
+
+            for (Job elem: talalt){
+                if (elem.getStatus().equals("aktiv")){
+                    aktivmunkak.add(elem);
+                }
+            }
+
+            
+            return new ResponseEntity<>(Collections.singletonMap("message", aktivmunkak), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(Collections.singletonMap("error", "Nem dolgozol a műhelyben, vagy a műhely törölve lett."), HttpStatus.OK);
+    }//Műhelyhez tartozó munkák lekérdezése
 
 }

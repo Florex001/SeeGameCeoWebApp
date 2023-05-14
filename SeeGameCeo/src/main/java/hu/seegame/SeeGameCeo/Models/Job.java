@@ -15,6 +15,7 @@ public class Job {
     private String auto;
     private String autoszine;
     private int autoar;
+    private String elvalalta;
     private int anyagkoltseg;
     private int folyamat1;
     private int folyamat2;
@@ -51,6 +52,14 @@ public class Job {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getElvalalta() {
+        return elvalalta;
+    }
+
+    public void setElvalalta(String elvalalta) {
+        this.elvalalta = elvalalta;
     }
 
     public int getMuhelyId() {
@@ -322,12 +331,12 @@ public class Job {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Job job = (Job) o;
-        return id == job.id && muhelyId == job.muhelyId && autoar == job.autoar && anyagkoltseg == job.anyagkoltseg && folyamat1 == job.folyamat1 && folyamat2 == job.folyamat2 && folyamat3 == job.folyamat3 && folyamat4 == job.folyamat4 && folyamat5 == job.folyamat5 && folyamat6 == job.folyamat6 && folyamat7 == job.folyamat7 && folyamat8 == job.folyamat8 && folyamat9 == job.folyamat9 && folyamat10 == job.folyamat10 && folyamat11 == job.folyamat11 && folyamat12 == job.folyamat12 && fizetes1 == job.fizetes1 && fizetes2 == job.fizetes2 && fizetes3 == job.fizetes3 && fizetes4 == job.fizetes4 && fizetes5 == job.fizetes5 && fizetes6 == job.fizetes6 && fizetes7 == job.fizetes7 && fizetes8 == job.fizetes8 && fizetes9 == job.fizetes9 && fizetes10 == job.fizetes10 && fizetes11 == job.fizetes11 && fizetes12 == job.fizetes12 && osszfizetes == job.osszfizetes && fizetve == job.fizetve && Objects.equals(auto, job.auto) && Objects.equals(autoszine, job.autoszine) && Objects.equals(leadta, job.leadta) && Objects.equals(status, job.status);
+        return id == job.id && muhelyId == job.muhelyId && autoar == job.autoar && anyagkoltseg == job.anyagkoltseg && folyamat1 == job.folyamat1 && folyamat2 == job.folyamat2 && folyamat3 == job.folyamat3 && folyamat4 == job.folyamat4 && folyamat5 == job.folyamat5 && folyamat6 == job.folyamat6 && folyamat7 == job.folyamat7 && folyamat8 == job.folyamat8 && folyamat9 == job.folyamat9 && folyamat10 == job.folyamat10 && folyamat11 == job.folyamat11 && folyamat12 == job.folyamat12 && fizetes1 == job.fizetes1 && fizetes2 == job.fizetes2 && fizetes3 == job.fizetes3 && fizetes4 == job.fizetes4 && fizetes5 == job.fizetes5 && fizetes6 == job.fizetes6 && fizetes7 == job.fizetes7 && fizetes8 == job.fizetes8 && fizetes9 == job.fizetes9 && fizetes10 == job.fizetes10 && fizetes11 == job.fizetes11 && fizetes12 == job.fizetes12 && osszfizetes == job.osszfizetes && fizetve == job.fizetve && Objects.equals(auto, job.auto) && Objects.equals(autoszine, job.autoszine) && Objects.equals(elvalalta, job.elvalalta) && Objects.equals(leadta, job.leadta) && Objects.equals(status, job.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, muhelyId, auto, autoszine, autoar, anyagkoltseg, folyamat1, folyamat2, folyamat3, folyamat4, folyamat5, folyamat6, folyamat7, folyamat8, folyamat9, folyamat10, folyamat11, folyamat12, fizetes1, fizetes2, fizetes3, fizetes4, fizetes5, fizetes6, fizetes7, fizetes8, fizetes9, fizetes10, fizetes11, fizetes12, osszfizetes, leadta, fizetve, status);
+        return Objects.hash(id, muhelyId, auto, autoszine, autoar, elvalalta, anyagkoltseg, folyamat1, folyamat2, folyamat3, folyamat4, folyamat5, folyamat6, folyamat7, folyamat8, folyamat9, folyamat10, folyamat11, folyamat12, fizetes1, fizetes2, fizetes3, fizetes4, fizetes5, fizetes6, fizetes7, fizetes8, fizetes9, fizetes10, fizetes11, fizetes12, osszfizetes, leadta, fizetve, status);
     }
 
     @Override
@@ -338,6 +347,7 @@ public class Job {
                 ", auto='" + auto + '\'' +
                 ", autoszine='" + autoszine + '\'' +
                 ", autoar=" + autoar +
+                ", elvalalta='" + elvalalta + '\'' +
                 ", anyagkoltseg=" + anyagkoltseg +
                 ", folyamat1=" + folyamat1 +
                 ", folyamat2=" + folyamat2 +
