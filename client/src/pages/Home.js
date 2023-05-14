@@ -1,11 +1,60 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import WorkshopSelect from '../components/home-components/workshop-components/WorkshopSelect'
 import { PlusOutlined } from '@ant-design/icons'
 import { motion } from 'framer-motion'
 import WorkshopGenerate from '../components/home-components/workshop-components/WorkshopGenerate';
 import { Toaster } from 'react-hot-toast';
+import axios from 'axios';
 
 function Home() {
+
+  const [myWorkshop, setMyWorkshop] = useState([]);
+  const [assistWorkshops, setAssistWorkshops] = useState([]);
+  const [createWorkshop, setCreateWorkshop] = useState(0)
+
+
+  // az adatok aszinkron betöltése
+  function loadMyWorkshop() {
+    return axios.get('http://localhost:9000/getmyworkshop')
+      .then(response => response.data);
+  }
+
+  function loadMyAssistWorkshops() {
+    return axios.get('http://localhost:9000/workshopiworkin')
+      .then(response => response.data);
+  }
+
+  useEffect(() => {
+    loadMyWorkshop()
+      .then((data) => {
+        if (data.error) {
+          setMyWorkshop([]);
+        } else {
+          const muhely = [];
+          muhely.push(data.message[0]);
+          setMyWorkshop(muhely);
+        }
+
+
+
+      })
+      .catch((error) => {
+        console.error(error);
+        // hiba kezelése
+      });
+
+    loadMyAssistWorkshops()
+      .then((data) => {
+        const muhelyw = [];
+        setAssistWorkshops(data.message);
+      })
+      .catch((error) => {
+        console.error(error);
+        // hiba kezelése
+      });
+
+  }, [createWorkshop])
+
 
   const [selected, setSelected] = useState(true);
   const [selectedVisible, setSelectedVisible] = useState(0);
@@ -28,34 +77,46 @@ function Home() {
         }
 
         <div className='workshop-selectors'>
-          {selectedVisible === 1 || selectedVisible === 0 ?
-            <motion.div whileHover={{scale: selected ? 1.05 : 1}} onClick={() => handleClick(1)}>
-              <WorkshopSelect num={"1"} />
-            </motion.div> :
-            <></>
+          {myWorkshop && myWorkshop.map((item, key) => {
+            return (
+              <div key={key}>
+                {selectedVisible === item.id || selectedVisible === 0 ?
+                  <motion.div whileHover={{ scale: selected ? 1.05 : 1 }} onClick={() => handleClick(item.id)}>
+                    <WorkshopSelect myWorkshop={item} />
+                  </motion.div> :
+                  <></>
+                }
+              </div>)
+          })
           }
 
-          {selectedVisible === 2 || selectedVisible === 0 ?
-            <motion.div whileHover={{scale: selected ? 1.05 : 1}} onClick={() => handleClick(2)}>
-              <WorkshopSelect num={"2"} />
-            </motion.div> :
-            <></>
+          {assistWorkshops && assistWorkshops.map((item, key) => {
+            return (
+              <div key={key}>
+                {selectedVisible === item.id || selectedVisible === 0 ?
+                  <motion.div whileHover={{ scale: selected ? 1.05 : 1 }} onClick={() => handleClick(item.id)}>
+                    <WorkshopSelect myWorkshop={item} />
+                  </motion.div> :
+                  <></>
+                }
+              </div>)
+          })
           }
-          {selectedVisible === 3 || selectedVisible === 0 ?
-            <motion.div whileHover={{scale: selected ? 1.05 : 1}} onClick={() => handleClick(3)}>
-              <WorkshopSelect num={"3"} />
-            </motion.div> :
-            <></>
-          }
+
         </div>
 
 
 
 
         <div className='desc-plus-container'>
-          {selected &&
-            <WorkshopGenerate />
+          {myWorkshop.length === 0 &&
+            <>
+              {selected &&
+                <WorkshopGenerate setCreateWorkshop={setCreateWorkshop} />
+              }
+            </>
           }
+
         </div>
       </div>
     </div>
