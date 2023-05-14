@@ -67,7 +67,7 @@ public class WorkshopController {
                 }
             }
         }
-        return new ResponseEntity<>(Collections.singletonMap("message", "Jelentkezz be."), HttpStatus.OK);
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
     }//felhasználó saját műhelye
 
     @GetMapping("/workshopiworkin")
@@ -91,7 +91,7 @@ public class WorkshopController {
                 }
             }
         }
-        return new ResponseEntity<>(Collections.singletonMap("message", "Jelentkezz be."), HttpStatus.OK);
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
     }//felhasználó műhelye amiben dolgozik
 
 }

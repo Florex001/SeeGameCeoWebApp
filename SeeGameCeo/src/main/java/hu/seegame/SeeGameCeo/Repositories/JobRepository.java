@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface JobRepository extends JpaRepository<Job, Integer> {
 
-    List<Job> findByMuhelyId(int id);
+    List<Job> findByMuhelyId(int id);//műhely munkák között keres a műhelyid alapján
 
 }

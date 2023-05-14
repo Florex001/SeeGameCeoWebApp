@@ -42,7 +42,7 @@ public class JobController {
             }
         }
 
-        return new ResponseEntity<>(Collections.singletonMap("message", "Jelentkezz be."), HttpStatus.BAD_REQUEST);
-    }
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.BAD_REQUEST);
+    }//az adott műhelyhez létre hoz egy munkát. egyszerre 2 aktiv munka lehet egy műhelyben
 
 }

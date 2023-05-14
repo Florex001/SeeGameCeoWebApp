@@ -26,7 +26,7 @@ public class JobService {
 
         List<Workshop> muhelybedolgozik = workshopRepository.findByDolgozo1OrDolgozo2OrDolgozo3OrDolgozo4OrDolgozo5OrDolgozo6OrDolgozo7OrDolgozo8OrDolgozo9OrDolgozo10OrDolgozo11OrDolgozo12(icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev);
         Optional<Workshop> workshop = workshopRepository.findById(muhelyid);
-        Workshop ove = workshopRepository.findByTulajId(userid);
+        List<Workshop> ove = workshopRepository.findByTulajId(userid);
 
         List<Job> munkak = jobRepository.findByMuhelyId(muhelyid);
 
@@ -35,20 +35,29 @@ public class JobService {
             return new ResponseEntity<>(Collections.singletonMap("error", "Nincs ilyen műhely."), HttpStatus.OK);
         }
 
-        int muhelybenid = 0;
+        Workshop muhelyben = null;
 
         if (!muhelybedolgozik.isEmpty()){
             for (Workshop elem : muhelybedolgozik){
                 if (elem.getId() == muhelyid){
-                    System.out.println(elem.getId());
-                    muhelybenid = elem.getId();
+                    muhelyben = elem;
                 }
             }
         }
 
-        if (!muhelybedolgozik.isEmpty() && muhelybenid == muhelyid){
+        if (muhelyben != null && muhelyben.getId() == muhelyid && muhelyben.getStatus().equals("aktiv")){
 
-            if (munkak.size() >= 2 && munkak.get(0).getStatus().equals("aktiv") && munkak.get(1).getStatus().equals("aktiv")){
+            int szamlalo = 0;
+
+            if (munkak != null){
+                for (Job elem : munkak){
+                    if (elem.getStatus().equals("aktiv")){
+                        szamlalo++;
+                    }
+                }
+            }
+
+            if (szamlalo >= 2){
                 return new ResponseEntity<>(Collections.singletonMap("error", "Csak két darab elválalt autó lehet a műhelyben."), HttpStatus.OK);
             }
 
@@ -67,9 +76,30 @@ public class JobService {
             return new ResponseEntity<>(Collections.singletonMap("message", "Sikeresen létrehozta az aktuális munkát."), HttpStatus.OK);
         }
 
-        if (ove != null && ove.getId() == muhelyid){
+        Workshop sajat = null;
 
-            if (munkak.size() >= 2 && munkak.get(0).getStatus().equals("aktiv") && munkak.get(1).getStatus().equals("aktiv")){
+        if (ove != null){
+            for (Workshop elem : ove){
+                if (elem.getStatus().equals("aktiv")){
+                    sajat = elem;
+                }
+            }
+        }
+
+
+        if (sajat != null && sajat.getId() == muhelyid && sajat.getStatus().equals("aktiv")){
+
+            int szamlalo = 0;
+
+            if (munkak != null){
+                for (Job elem : munkak){
+                    if (elem.getStatus().equals("aktiv")){
+                        szamlalo++;
+                    }
+                }
+            }
+
+            if (szamlalo >= 2){
                 return new ResponseEntity<>(Collections.singletonMap("error", "Csak két darab elválalt autó lehet a műhelyben."), HttpStatus.OK);
             }
 
@@ -88,8 +118,8 @@ public class JobService {
             return new ResponseEntity<>(Collections.singletonMap("message", "Sikeresen létrehozta az aktuális munkát."), HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(Collections.singletonMap("message", "Nem dolgozol a műhelyben."), HttpStatus.OK);
+        return new ResponseEntity<>(Collections.singletonMap("error", "Nem dolgozol a műhelyben, vagy a műhely törölve lett."), HttpStatus.OK);
 
-    }
+    }//Fényező munka hozzáadása
 
 }

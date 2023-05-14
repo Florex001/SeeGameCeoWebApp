@@ -4,11 +4,13 @@ import hu.seegame.SeeGameCeo.Models.User;
 import hu.seegame.SeeGameCeo.Models.Workshop;
 import hu.seegame.SeeGameCeo.Repositories.UserRepository;
 import hu.seegame.SeeGameCeo.Repositories.WorkshopRepository;
+import org.hibernate.jdbc.Work;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,15 +28,32 @@ public class WorkshopService {
         workshop.setTulajId(tulaj_id);
         workshop.setStatus("aktiv");
 
-        Workshop muhelyidvan = workshopRepository.findByMuhelyid(workshop.getMuhelyid());
-        Workshop tulajid = workshopRepository.findByTulajId(workshop.getTulajId());
+        List<Workshop> muhelyidvan = workshopRepository.findByMuhelyid(workshop.getMuhelyid());
+        List<Workshop> tulajid = workshopRepository.findByTulajId(workshop.getTulajId());
 
-        if (muhelyidvan != null){
-            return new ResponseEntity<>(Collections.singletonMap("message", "Már létezik ezzel a műhelyid-val műhely."), HttpStatus.OK);
+
+        if (muhelyidvan != null) {
+            for (Workshop elem : muhelyidvan) {
+                if (elem.getStatus().equals("aktiv")){
+                    return new ResponseEntity<>(Collections.singletonMap("error", "Már létezik ezzel a műhelyid-val műhely."), HttpStatus.OK);
+                }
+            }
         }
 
+
+        boolean volt = false;
+
         if (tulajid != null){
-            return new ResponseEntity<>(Collections.singletonMap("message", "Már van egy műhely a tulajdonodban."), HttpStatus.OK);
+            for (Workshop elem : tulajid){
+                if (elem.getStatus().equals("aktiv")){
+                    volt = true;
+                }
+            }
+        }
+
+
+        if (volt){
+            return new ResponseEntity<>(Collections.singletonMap("error", "Már van egy műhely a tulajdonodban."), HttpStatus.OK);
 
         }
 
@@ -45,12 +64,25 @@ public class WorkshopService {
 
     public ResponseEntity<Object> getMyWorkshop(int tulajid){
 
-        Workshop workshop = workshopRepository.findByTulajId(tulajid);
+        List<Workshop> workshop = workshopRepository.findByTulajId(tulajid);
 
         if (workshop != null){
-            return new ResponseEntity<>(Collections.singletonMap("message", workshop), HttpStatus.OK);
+
+            List<Workshop> muhelyek = new ArrayList<>();
+
+            for (Workshop elem : workshop){
+                if (elem.getStatus().equals("aktiv")){
+                    muhelyek.add(elem);
+                }
+            }
+
+            if (muhelyek.isEmpty()){
+                return  new ResponseEntity<>(Collections.singletonMap("error", "Nincs aktív műhelye."), HttpStatus.OK);
+            }
+
+            return new ResponseEntity<>(Collections.singletonMap("message", muhelyek), HttpStatus.OK);
         }else {
-            return new ResponseEntity<>(Collections.singletonMap("message", "Nincs műhelye"), HttpStatus.OK);
+            return new ResponseEntity<>(Collections.singletonMap("error", "Nincs műhelye"), HttpStatus.OK);
         }
 
 
@@ -68,7 +100,19 @@ public class WorkshopService {
             return new ResponseEntity<>(Collections.singletonMap("error", "Nem dolgozik sehol."), HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(Collections.singletonMap("message", ittdolgozik), HttpStatus.OK);
+        List<Workshop> workshops = new ArrayList<>();
+
+        for (Workshop elem : ittdolgozik){
+            if (elem.getStatus().equals("aktiv")){
+                workshops.add(elem);
+            }
+        }
+
+        if (workshops.isEmpty()){
+            return new ResponseEntity<>(Collections.singletonMap("error", "Nincs aktív műhely amiben dolgozol."),  HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(Collections.singletonMap("message", workshops), HttpStatus.OK);
 
     }//Felhasználó műhelye amiben dolgozik
 

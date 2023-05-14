@@ -50,7 +50,7 @@ public class UserController {
             Cookie cookie = new Cookie("user", encrypCookie);
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
-            return new ResponseEntity<>(Collections.singletonMap("cookie", cookie), HttpStatus.OK);
+            return new ResponseEntity<>(Collections.singletonMap("message", "Sikeres bejelentkezés!"), HttpStatus.OK);
         }
 
         return bejelentkezett;
@@ -75,7 +75,7 @@ public class UserController {
                 }
             }
         }
-        return new ResponseEntity<>(Collections.singletonMap("message", "Jelentkezz be."), HttpStatus.OK);
-    }
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
+    }//ki listázza jsonba az összes ic nevet amivel regisztráltak
 
 }
