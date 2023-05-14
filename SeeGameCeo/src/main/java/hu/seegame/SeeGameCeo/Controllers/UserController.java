@@ -69,8 +69,9 @@ public class UserController {
                     if (parts.length == 4) {
                         cookie.setHttpOnly(true);
                         String id = parts[0];
+                        String icnev = parts[3];
 
-                        return userService.getAllIcname();
+                        return userService.getAllIcname(icnev);
                     }
                 }
             }

@@ -68,16 +68,19 @@ public class UserService {
 
     } //felhasználó bejelentkezés
 
-    public ResponseEntity<Object> getAllIcname(){
+    public ResponseEntity<Object> getAllIcname(String icnev){
         List<User> felhasznalok = userRepository.findAll();
 
         List<Map<String, String>> icnevList = new ArrayList<>();
 
         for (User elem : felhasznalok){
-            Map<String, String> icnevMap = new HashMap<>();
-            icnevMap.put("label", elem.getIcnev());
-            icnevMap.put("value", elem.getIcnev());
-            icnevList.add(icnevMap);
+            if (!icnev.equals(elem.getIcnev())){
+                Map<String, String> icnevMap = new HashMap<>();
+                icnevMap.put("label", elem.getIcnev());
+                icnevMap.put("value", elem.getIcnev());
+                icnevList.add(icnevMap);
+            }
+
         }
 
         return new ResponseEntity<>(icnevList, HttpStatus.OK);
