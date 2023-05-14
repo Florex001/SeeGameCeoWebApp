@@ -31,3 +31,7 @@
 ### Műhelyhez munka hozzáadás
 
 * http://localhost:9000/createjob/{id}
+
+### Műhelyhez tartozó munkák lekérdezése:
+
+* http://localhost:9000/getworkbyworkshop/{id}
