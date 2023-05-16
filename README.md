@@ -4,34 +4,44 @@
 
 ### Regisztráció:
 
-* http://localhost:9000/registration
+* http://localhost:9000/api/user/registration
 
 ### Bejelentkezés:
 
-* http://localhost:9000/login
+* http://localhost:9000/api/user/login
+
+
+
+## See V4 elérések:
+
+### Szerver választás:
+
+* http://localhost:9000/api/user/v4/chooseserver
+
+### Karakter hozzáadás:
+
+* http://localhost:9000/api/user/v4/createcaracter
 
 ### Ic nevek:
 
-* http://localhost:9000/getallicname
-
-## Műhelyhez kapcsolódó útvonalak:
+* http://localhost:9000/api/user/v4/getallicname
 
 ### Műhely hozzáadása:
 
-* http://localhost:9000/createworkshop
+* http://localhost:9000/api/user/v4/createworkshop
 
 ### Felhasználó saját műhelye:
 
-* http://localhost:9000/getmyworkshop
+* http://localhost:9000/api/user/v4/getmyworkshop
 
 ### Felhasználó műhelyei amiben dolgozik:
 
-* http://localhost:9000/workshopiworkin
+* http://localhost:9000/api/user/v4/workshopiworkin
 
 ### Műhelyhez munka hozzáadás
 
-* http://localhost:9000/createjob/{id}
+* http://localhost:9000/api/user/v4/createjob/{műhelyid}
 
 ### Műhelyhez tartozó munkák lekérdezése:
 
-* http://localhost:9000/getworkbyworkshop/{id}
+* http://localhost:9000/api/user/v4/getworkbyworkshop/{műhelyid}
