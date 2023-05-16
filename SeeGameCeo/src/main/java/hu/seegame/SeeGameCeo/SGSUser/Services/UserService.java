@@ -1,8 +1,8 @@
-package hu.seegame.SeeGameCeo.Services;
+package hu.seegame.SeeGameCeo.SGSUser.Services;
 
-import hu.seegame.SeeGameCeo.Models.User;
-import hu.seegame.SeeGameCeo.Others.Encrypt;
-import hu.seegame.SeeGameCeo.Repositories.UserRepository;
+import hu.seegame.SeeGameCeo.SGSUser.Models.User;
+import hu.seegame.SeeGameCeo.SGSUser.Others.Encrypt;
+import hu.seegame.SeeGameCeo.SGSUser.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,19 +26,14 @@ public class UserService {
         user.setPassword(titkositottPass);
 
         User talaltusername = userRepository.findByUsername(username);
-        User talaltaccid = userRepository.findByAccountid(user.getAccountid());
-        User talalticnev = userRepository.findByIcnev(user.getIcnev());
+        User talaltemail = userRepository.findByEmail(user.getEmail());
 
-        if (talalticnev != null){
-            return new ResponseEntity<>(Collections.singletonMap("error", "Már létezik ilyen ic névvel fiók."), HttpStatus.OK);
-        }
-
-        if (talaltusername != null && talaltusername.getUsername().equals(username)){
+        if (talaltusername != null){
             return new ResponseEntity<>(Collections.singletonMap("error", "Már létezik ilyen felhasználónévvel fiók."), HttpStatus.OK);
         }
 
-        if (talaltaccid != null && talaltaccid.getAccountid() == user.getAccountid()){
-            return new ResponseEntity<>(Collections.singletonMap("error", "Az AccounID már regisztrálva van."), HttpStatus.OK);
+        if (talaltemail != null){
+            return new ResponseEntity<>(Collections.singletonMap("error", "Már létezik ilyen emailel fiók."), HttpStatus.OK);
         }
 
         userRepository.save(user);
@@ -67,24 +62,5 @@ public class UserService {
         }
 
     } //felhasználó bejelentkezés
-
-    public ResponseEntity<Object> getAllIcname(String icnev){
-        List<User> felhasznalok = userRepository.findAll();
-
-        List<Map<String, String>> icnevList = new ArrayList<>();
-
-        for (User elem : felhasznalok){
-            if (!icnev.equals(elem.getIcnev())){
-                Map<String, String> icnevMap = new HashMap<>();
-                icnevMap.put("label", elem.getIcnev());
-                icnevMap.put("value", elem.getIcnev());
-                icnevList.add(icnevMap);
-            }
-
-        }
-
-        return new ResponseEntity<>(icnevList, HttpStatus.OK);
-
-    }//Összes ic név lekérése
 
 }

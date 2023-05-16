@@ -1,4 +1,4 @@
-package hu.seegame.SeeGameCeo.Others;
+package hu.seegame.SeeGameCeo.SGSUser.Others;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;

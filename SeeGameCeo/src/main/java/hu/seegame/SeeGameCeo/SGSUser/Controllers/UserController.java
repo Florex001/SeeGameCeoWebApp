@@ -1,11 +1,10 @@
-package hu.seegame.SeeGameCeo.Controllers;
+package hu.seegame.SeeGameCeo.SGSUser.Controllers;
 
-import hu.seegame.SeeGameCeo.Models.User;
-import hu.seegame.SeeGameCeo.Others.Encrypt;
-import hu.seegame.SeeGameCeo.Repositories.UserRepository;
-import hu.seegame.SeeGameCeo.Services.UserService;
+import hu.seegame.SeeGameCeo.SGSUser.Models.User;
+import hu.seegame.SeeGameCeo.SGSUser.Others.Encrypt;
+import hu.seegame.SeeGameCeo.SGSUser.Repositories.UserRepository;
+import hu.seegame.SeeGameCeo.SGSUser.Services.UserService;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,8 +41,9 @@ public class UserController {
             String jogosultsag = felhasznalo.getPermission();
             int id = felhasznalo.getId();
             String usernamebydb = felhasznalo.getUsername();
-            String icnev = felhasznalo.getIcnev();
-            String value = id + "-" + usernamebydb + "-" + jogosultsag + "-" + icnev;
+            String value = id + "-" + usernamebydb + "-" + jogosultsag;
+
+            System.out.println(value);
 
             String encrypCookie = Encrypt.encrypt(value);
 
@@ -56,27 +56,5 @@ public class UserController {
         return bejelentkezett;
     }//bejelentkezés
 
-    @GetMapping("/getallicname")
-    public ResponseEntity<Object> getAllIcnev(HttpServletRequest request){
-        Cookie[] cookies = request.getCookies();
-
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("user")) {
-                    String encryptedValue = cookie.getValue();
-                    String decryptedValue = Encrypt.decrypt(encryptedValue);
-                    String[] parts = decryptedValue.split("-");
-                    if (parts.length == 4) {
-                        cookie.setHttpOnly(true);
-                        String id = parts[0];
-                        String icnev = parts[3];
-
-                        return userService.getAllIcname(icnev);
-                    }
-                }
-            }
-        }
-        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
-    }//ki listázza jsonba az összes ic nevet amivel regisztráltak
 
 }
