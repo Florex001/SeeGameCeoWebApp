@@ -8,8 +8,8 @@ import java.util.Objects;
 public class JobV4 {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "JobV4ID")
-    @SequenceGenerator(name = "JobV4ID", sequenceName = "JobV4ID", allocationSize = 1, initialValue = 1000)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "JobV4IDGenerator")
+    @SequenceGenerator(name = "JobV4IDGenerator", sequenceName = "JobV4IDGenerator", allocationSize = 1, initialValue = 1000)
     private int id;
     private int muhelyId;
     private String auto;

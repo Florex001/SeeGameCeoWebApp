@@ -9,8 +9,8 @@ import java.util.Objects;
 public class WorkshopV4 {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "workshopV4ID")
-    @SequenceGenerator(name = "workshopV4ID", sequenceName = "workshopV4ID", allocationSize = 1, initialValue = 1000)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "workshopV4IDGenerator")
+    @SequenceGenerator(name = "workshopV4IDGenerator", sequenceName = "workshopV4IDGenerator", allocationSize = 1, initialValue = 1000)
     private int id;
     private int muhelyid;
     private String tulajNev;
