@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -59,6 +60,18 @@ public class WorkshopV4Services {
 
         }
 
+        LocalDateTime datum = workshopV4.getLejarat();
+
+        if (LocalDateTime.now().isAfter(datum)){
+            return new ResponseEntity<>(Collections.singletonMap("error", "A dátum nem lehet a mai napnál hamarabbi."), HttpStatus.OK);
+        }
+
+        LocalDateTime maxdatum = LocalDateTime.now().plusWeeks(1);
+
+        if (maxdatum.isBefore(datum)){
+            return new ResponseEntity<>(Collections.singletonMap("error", "A mai dátumtol maximum 1 hét lehet a lejárat."), HttpStatus.OK);
+        }
+
         workshopV4Repository.save(workshopV4);
         return new ResponseEntity<>(Collections.singletonMap("message", "Sikeres műhely hozzáadás."), HttpStatus.OK);
 
@@ -70,7 +83,46 @@ public class WorkshopV4Services {
 
         List<WorkshopV4> workshop = workshopV4Repository.findByTulajNev(karakterV4.getIcnev());
 
-        if (workshop != null) {
+        WorkshopV4 sajat = new WorkshopV4();
+
+        for (WorkshopV4 elem : workshop) {
+            if (elem.getStatus().equals("aktiv")) {
+                sajat.setTulajNev(elem.getTulajNev());
+                sajat.setStatus(elem.getStatus());
+                sajat.setId(elem.getId());
+                sajat.setMuhelynev(elem.getMuhelynev());
+                sajat.setMuhelyid(elem.getMuhelyid());
+                sajat.setLejarat(elem.getLejarat());
+                sajat.setDolgozo1(elem.getDolgozo1());
+                sajat.setDolgozo2(elem.getDolgozo2());
+                sajat.setDolgozo3(elem.getDolgozo3());
+                sajat.setDolgozo4(elem.getDolgozo4());
+                sajat.setDolgozo5(elem.getDolgozo5());
+                sajat.setDolgozo6(elem.getDolgozo6());
+                sajat.setDolgozo7(elem.getDolgozo7());
+                sajat.setDolgozo8(elem.getDolgozo8());
+                sajat.setDolgozo9(elem.getDolgozo9());
+                sajat.setDolgozo10(elem.getDolgozo10());
+                sajat.setDolgozo11(elem.getDolgozo11());
+                sajat.setDolgozo12(elem.getDolgozo12());
+            }
+        }
+
+        try {
+
+            LocalDateTime sajatlejarat = sajat.getLejarat();
+
+            if (sajatlejarat != null && LocalDateTime.now().isAfter(sajatlejarat)) {
+                sajat.setStatus("deaktiv");
+                workshopV4Repository.save(sajat);
+                return new ResponseEntity<>(Collections.singletonMap("lejart", "Lejárt a műhelyed."), HttpStatus.OK);
+            }
+
+        } catch (NullPointerException e) {
+            System.out.println("Lejárt a műhely.");
+        }
+
+        if (!workshop.isEmpty()){
 
             List<WorkshopV4> muhelyek = new ArrayList<>();
 
@@ -85,9 +137,10 @@ public class WorkshopV4Services {
             }
 
             return new ResponseEntity<>(Collections.singletonMap("message", muhelyek), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(Collections.singletonMap("error", "Nincs műhelye"), HttpStatus.OK);
         }
+
+        return new ResponseEntity<>(Collections.singletonMap("error", "Nincs műhelye."), HttpStatus.OK);
+
     }//lekérdezi azt a műhelyt aminek a felhasználó a tulajdonosa
 
     public ResponseEntity<Object> getWorkshopiworkin(int userid){
@@ -106,7 +159,9 @@ public class WorkshopV4Services {
 
         for (WorkshopV4 elem : ittdolgozik){
             if (elem.getStatus().equals("aktiv")){
-                workshops.add(elem);
+                if (!LocalDateTime.now().isAfter(elem.getLejarat())){
+                    workshops.add(elem);
+                }
             }
         }
 
