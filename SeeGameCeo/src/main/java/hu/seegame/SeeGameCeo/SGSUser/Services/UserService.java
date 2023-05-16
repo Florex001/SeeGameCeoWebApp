@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -17,6 +18,9 @@ public class UserService {
     private UserRepository userRepository;
 
     public ResponseEntity<Object> registrationUser(User user){
+
+        user.setCreated_at(LocalDateTime.now());
+        user.setPermission("user");
 
         String username = user.getUsername();
 

@@ -18,14 +18,6 @@ public class User {
     private LocalDateTime created_at;
     private String permission;
 
-    @PrePersist
-    public void onCreate(){
-        if (created_at == null || permission == null){
-            created_at = LocalDateTime.now();
-            permission = "user";
-        }
-    }
-
     public int getId() {
         return id;
     }

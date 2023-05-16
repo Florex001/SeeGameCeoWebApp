@@ -5,6 +5,7 @@ import hu.seegame.SeeGameCeo.V4Ceo.Models.KarakterV4;
 import hu.seegame.SeeGameCeo.V4Ceo.Services.KarakterV4Service;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,6 @@ public class KarakterV4Controller {
     @PostMapping("/createcaracter")
     public ResponseEntity<Object> createCharacter(@RequestBody KarakterV4 karakterV4, HttpServletRequest request){
 
-        System.out.println(karakterV4);
         Cookie[] cookies = request.getCookies();
 
         if (cookies != null) {
@@ -44,5 +44,45 @@ public class KarakterV4Controller {
             }
         }
         return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
-    }
+    }//karakter létrehozása
+
+    @PostMapping("/chooseserver")
+    public ResponseEntity<Object> chooseServer(HttpServletResponse response, HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("user")) {
+                    String encryptedValue = cookie.getValue();
+                    String decryptedValue = Encrypt.decrypt(encryptedValue);
+                    String[] parts = decryptedValue.split("-");
+                    if (parts.length == 3) {
+                        cookie.setHttpOnly(true);
+                        String id = parts[0];
+
+                        KarakterV4 karakterV4 = karakterV4Service.chooseServer(Integer.parseInt(id));
+
+                        if (karakterV4 == null){
+                            return new ResponseEntity<>(Collections.singletonMap("error", "Nincs karaktered."), HttpStatus.OK);
+                        }
+
+                        String value = "v4" + "-" + karakterV4.getIcnev();
+
+                        System.out.println(value);
+
+                        String encrypCookie = Encrypt.encrypt(value);
+
+
+                        Cookie cookie2 = new Cookie("server", encrypCookie);
+                        cookie2.setHttpOnly(true);
+                        response.addCookie(cookie2);
+
+
+                        return new ResponseEntity<>(Collections.singletonMap("server", value), HttpStatus.OK);
+                    }
+                }
+            }
+        }
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
+    }//server sütit küld vissza ha kiválasztja a szervert és van karaktere különben létre kell hoznia egy karaktert hogy meg kapja a sütit
 }

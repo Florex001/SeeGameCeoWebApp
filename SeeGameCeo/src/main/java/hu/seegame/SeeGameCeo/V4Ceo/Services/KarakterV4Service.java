@@ -30,6 +30,13 @@ public class KarakterV4Service {
 
         karakterV4Repository.save(karakterV4);
         return new ResponseEntity<>(Collections.singletonMap("message", "Sikeres létrehozás."), HttpStatus.OK);
-    }
+    }//karakter létrehozása
+
+    public KarakterV4 chooseServer(int userid){
+
+        KarakterV4 karakterV4 = karakterV4Repository.findByUserid(userid);
+
+        return karakterV4;
+    }//lekérdezi hogy van e a felhasználónak az adott szerveren karaktere ha van vissza adja az értéket ha nincs akkor null
 
 }
