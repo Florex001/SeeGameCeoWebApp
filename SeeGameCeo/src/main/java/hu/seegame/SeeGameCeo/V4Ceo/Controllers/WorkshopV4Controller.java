@@ -1,29 +1,53 @@
 package hu.seegame.SeeGameCeo.V4Ceo.Controllers;
 
 import hu.seegame.SeeGameCeo.SGSUser.Others.Encrypt;
-import hu.seegame.SeeGameCeo.V4Ceo.Models.KarakterV4;
-import hu.seegame.SeeGameCeo.V4Ceo.Services.KarakterV4Service;
+import hu.seegame.SeeGameCeo.V4Ceo.Models.WorkshopV4;
+import hu.seegame.SeeGameCeo.V4Ceo.Services.WorkshopV4Services;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 @RestController
 @RequestMapping("/api/user/v4")
 @CrossOrigin(origins = "http://localhost:3000/", allowCredentials = "true")
-public class KarakterV4Controller {
+public class WorkshopV4Controller {
 
     @Autowired
-    private KarakterV4Service karakterV4Service;
+    private WorkshopV4Services workshopV4Services;
 
-    @PostMapping("/createcaracter")
-    public ResponseEntity<Object> createCharacter(@RequestBody KarakterV4 karakterV4, HttpServletRequest request){
+    @PostMapping("/createworkshop")
+    public ResponseEntity<Object> createWorkshop(@RequestBody WorkshopV4 workshopV4, HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("user")) {
+                    String encryptedValue = cookie.getValue();
+                    String decryptedValue = Encrypt.decrypt(encryptedValue);
+                    String[] parts = decryptedValue.split("-");
+                    if (parts.length == 3) {
+                        String id = parts[0];
+                        cookie.setHttpOnly(true);
+
+                        ResponseEntity<Object> hozzadas = workshopV4Services.createWorkshop(workshopV4, Integer.parseInt(id));
+
+                        return hozzadas;
+                    }
+                }
+            }
+        }
+
+        return new ResponseEntity<>(Collections.singletonMap("message", "Jelentkezz be."), HttpStatus.BAD_REQUEST);
+
+    }//műhely létrehozás
+
+    @GetMapping("/getmyworkshop")
+    public ResponseEntity<Object> getMyWorkshop(HttpServletRequest request){
 
         Cookie[] cookies = request.getCookies();
 
@@ -37,18 +61,18 @@ public class KarakterV4Controller {
                         cookie.setHttpOnly(true);
                         String id = parts[0];
 
-                        karakterV4.setUserid(Integer.parseInt(id));
+                        ResponseEntity<Object> sajatmuhelye = workshopV4Services.getMyWorkshop(Integer.parseInt(id));
 
-                        return karakterV4Service.createCharacter(karakterV4);
+                        return sajatmuhelye;
                     }
                 }
             }
         }
         return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
-    }//karakter létrehozása
+    }//felhasználó saját műhelye
 
-    @PostMapping("/chooseserver")
-    public ResponseEntity<Object> chooseServer(HttpServletResponse response, HttpServletRequest request){
+    @GetMapping("/workshopiworkin")
+    public ResponseEntity<Object> getWorkshopiworkin(HttpServletRequest request){
         Cookie[] cookies = request.getCookies();
 
         if (cookies != null) {
@@ -61,42 +85,15 @@ public class KarakterV4Controller {
                         cookie.setHttpOnly(true);
                         String id = parts[0];
 
-                        KarakterV4 karakterV4 = karakterV4Service.chooseServer(Integer.parseInt(id));
+                        ResponseEntity<Object> ittdolgozik = workshopV4Services.getWorkshopiworkin(Integer.parseInt(id));
 
-                        if (karakterV4 == null){
-                            return new ResponseEntity<>(Collections.singletonMap("error", "Nincs karaktered."), HttpStatus.OK);
-                        }
-
-                        String value = "v4";
-
-
-                        return new ResponseEntity<>(Collections.singletonMap("server", value), HttpStatus.OK);
+                        return ittdolgozik ;
                     }
                 }
             }
         }
         return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
-    }//server sütit küld vissza ha kiválasztja a szervert és van karaktere különben létre kell hoznia egy karaktert hogy meg kapja a sütit
+    }//felhasználó műhelye amiben dolgozik
 
-    @GetMapping("/getallicname")
-    public ResponseEntity<Object> getAllIcnev(HttpServletRequest request){
-        Cookie[] cookies = request.getCookies();
 
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("user")) {
-                    String encryptedValue = cookie.getValue();
-                    String decryptedValue = Encrypt.decrypt(encryptedValue);
-                    String[] parts = decryptedValue.split("-");
-                    if (parts.length == 3) {
-                        cookie.setHttpOnly(true);
-                        String id = parts[0];
-
-                        return karakterV4Service.getAllIcname(Integer.parseInt(id));
-                    }
-                }
-            }
-        }
-        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
-    }//ki listázza jsonba az összes ic nevet amivel regisztráltak
 }

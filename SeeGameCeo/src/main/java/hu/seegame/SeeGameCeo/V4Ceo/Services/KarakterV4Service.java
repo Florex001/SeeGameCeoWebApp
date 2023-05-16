@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.util.*;
 
 @Service
 public class KarakterV4Service {
@@ -38,5 +38,27 @@ public class KarakterV4Service {
 
         return karakterV4;
     }//lekérdezi hogy van e a felhasználónak az adott szerveren karaktere ha van vissza adja az értéket ha nincs akkor null
+
+    public ResponseEntity<Object> getAllIcname(int userid){
+
+        KarakterV4 karakterV4 = karakterV4Repository.findByUserid(userid);
+
+        List<KarakterV4> felhasznalok = karakterV4Repository.findAll();
+
+        List<Map<String, String>> icnevList = new ArrayList<>();
+
+        for (KarakterV4 elem : felhasznalok){
+            if (!karakterV4.getIcnev().equals(elem.getIcnev())){
+                Map<String, String> icnevMap = new HashMap<>();
+                icnevMap.put("label", elem.getIcnev());
+                icnevMap.put("value", elem.getIcnev());
+                icnevList.add(icnevMap);
+            }
+
+        }
+
+        return new ResponseEntity<>(icnevList, HttpStatus.OK);
+
+    }//Összes ic név lekérése
 
 }
