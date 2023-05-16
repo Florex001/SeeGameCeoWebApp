@@ -11,9 +11,71 @@ body {
 
 }
 
+.overlay {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+}
+
+.overlay2 {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+}
+
+.overlay3 {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(14, 29, 51, 0.093);
+}
+
+.gradient5[data-isOn="true"]
+{
+  background-image: linear-gradient(to left, rgba(147, 225, 175, 0.381) 10%, rgba(14, 29, 51, 0) 50%);
+    background-size: 200% 200%;
+    -webkit-animation: Animation 5s ease infinite;
+    -moz-animation: Animation 5s ease infinite;
+    animation: Animation 5s ease infinite;
+}
+
+.gradient5[data-isOn="false"]
+{
+  background-image: linear-gradient(to right, rgba(147, 225, 175, 0.381) 10%, rgba(14, 29, 51, 0) 50%);
+    background-size: 200% 200%;
+    -webkit-animation: Animation 5s ease infinite;
+    -moz-animation: Animation 5s ease infinite;
+    animation: Animation 5s ease infinite;
+}
+
+.overlay2[data-isOn="true"] {
+  background-image: linear-gradient(to left, rgba(147, 225, 175, 0.381) 30%, rgba(14, 29, 51, 0.019) 70%);
+}
+.overlay2[data-isOn="false"] {
+  background-image: linear-gradient(to right, rgba(147, 225, 175, 0.381) 30%, rgba(14, 29, 51, 0.019) 70%);
+}
+
+
+
 .login-page-container {
   justify-content: center;
-  margin-top: 10rem;
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
 
 
 }
@@ -24,32 +86,37 @@ body {
   margin: -8rem 0rem 4rem 0rem;
 }
 
+.warning-message {
+  margin-top: 0.5rem;
+  width: 200px;
+  font-size: 0.8rem;
+  background-color: #e064681a;
+  border: 1px solid #E06469;
+  border-radius: 12px;
+  padding: 0.2rem 0.4rem;
+}
+
 .login-form {
-  width: 300px;
-  height: 250px;
-  padding: 4rem 0rem;
+  z-index: 1;
+  padding: 1.5rem 2rem;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 10%;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  background: #1D1F20;
+  background: rgba(255, 255, 255, 0.627);
 }
 
 .login-button {
-  background-color: #A27B5C;
-  color: white;
+  color: #328cb6;
 }
 
-.login-button:hover {
-  background-color: white;
-  color: #A27B5C
-}
 
 .username-input {
-  width: 67%;
-  margin-bottom: 1rem;
+  width: 90%;
+  margin-bottom: 0.8rem;
+  margin-right: 0.1rem;
 
 }
 
@@ -66,19 +133,115 @@ body {
 .login-h1 {
   height: 90px;
   width: 420px;
-  background: url('./assets/hatter.png');
-  background-position: 90% 20%;
   text-align: center;
   position: relative;
   margin: 0 auto;
+  z-index: 5;
 }
 
 .login-h1 h1 {
   color: white;
   -webkit-text-stroke: 0.01px black;
-  font-size: 55px;
+  font-size: 4.2rem;
   margin: 0 auto;
   ;
+}
+
+.lobby-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2.5rem;
+}
+
+
+.lobby-message-container {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  margin-left: 2rem;
+  margin-bottom: 2rem;
+}
+
+.submit-lobby {
+  background-color: #3cb8aa;
+  padding: 0.5rem 1rem;
+  border-radius: 7px;
+  color: whitesmoke;
+  font-size: 1.3rem;
+  box-shadow: rgba(0, 0, 0, 0.594) 0px 3px 8px;
+  cursor: pointer;
+  
+}
+
+.lobby-message-container {
+  font-size: 2rem;
+
+}
+
+.logos-container {
+  display: flex;
+  align-items: center;
+}
+
+.v3logo-container {
+  width: 200px;
+}
+
+.v3logo-container img {
+  width: 100%;
+}
+
+.lvlogo-container {
+  display: flex;
+  align-items: center;
+  width: 200px;
+}
+
+.lvlogo-container span {
+  font-size: 2rem;
+  color: gray;
+  margin-top: 5rem;
+}
+
+.lvlogo-container img {
+  width: 200px;
+}
+
+.switch {
+  width: 160px;
+  height: 100px;
+  background-color: #3cb882;
+  display: flex;
+  justify-content: flex-start;
+  border-radius: 50px;
+  padding: 10px;
+  z-index: 2;
+  cursor: pointer;
+  margin: 0rem 1rem;
+  box-shadow: rgba(0, 0, 0, 0.594) 0px 3px 8px;
+}
+
+.switch[data-isOn="true"] {
+  justify-content: flex-end;
+}
+
+.handle {
+  width: 80px;
+  height: 80px;
+  background-color: white;
+  border-radius: 40px;
+}
+
+.home-header {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+.home-header img {
+  width: 70px;
 }
 
 .desc-plus-container h2{
@@ -121,7 +284,7 @@ body {
   background-color: white;
   padding: 0.2rem 0.5rem;
   border-radius: 8px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  box-shadow: rgba(0, 0, 0, 0.442) 0px 3px 8px;
 }
 
 .workshop-select h2 {
@@ -278,8 +441,23 @@ body {
 }
 
 .workshop-create-input {
-  align-items: center;
   display: flex;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+}
+
+.workshop-create-container {
+  display: flex;
+  flex-direction: column;
+}
+.workshop-create-container:nth-child(1) {
+  margin-top: 1.5rem;
+}
+
+.workshop-create-input span {
+  font-size: 0.7rem;
+  color: gray;
+  margin-left: 0.1rem;
 }
 
 .workshop-create-input input {
@@ -372,21 +550,6 @@ body {
     animation: Animation 5s ease infinite;
 }
 
-@-webkit-keyframes Animation {
-    0%{background-position:10% 0%}
-    50%{background-position:91% 100%}
-    100%{background-position:10% 0%}
-}
-@-moz-keyframes Animation {
-    0%{background-position:10% 0%}
-    50%{background-position:91% 100%}
-    100%{background-position:10% 0%}
-}
-@keyframes Animation { 
-    0%{background-position:10% 0%}
-    50%{background-position:91% 100%}
-    100%{background-position:10% 0%}
-}
 
 #gradient2
 {
@@ -397,22 +560,6 @@ body {
     -webkit-animation: Animation 5s ease infinite;
     -moz-animation: Animation 5s ease infinite;
     animation: Animation 5s ease infinite;
-}
-
-@-webkit-keyframes Animation {
-    0%{background-position:10% 0%}
-    50%{background-position:91% 100%}
-    100%{background-position:10% 0%}
-}
-@-moz-keyframes Animation {
-    0%{background-position:10% 0%}
-    50%{background-position:91% 100%}
-    100%{background-position:10% 0%}
-}
-@keyframes Animation { 
-    0%{background-position:10% 0%}
-    50%{background-position:91% 100%}
-    100%{background-position:10% 0%}
 }
 
 #gradient3
@@ -426,6 +573,15 @@ body {
     animation: Animation 5s ease infinite;
 }
 
+#gradient4
+{
+    background-image: linear-gradient(250.3deg, rgba(147, 225, 175, 0.381) 30%, rgba(14, 29, 51, 0.2) 50%);
+    background-size: 200% 200%;
+    -webkit-animation: Animation 5s ease infinite;
+    -moz-animation: Animation 5s ease infinite;
+    animation: Animation 5s ease infinite;
+}
+
 @-webkit-keyframes Animation {
     0%{background-position:10% 0%}
     50%{background-position:91% 100%}
@@ -440,18 +596,4 @@ body {
     0%{background-position:10% 0%}
     50%{background-position:91% 100%}
     100%{background-position:10% 0%}
-}
-
-@keyframes animatedgradient {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-
-  100% {
-    background-position: 0% 50%;
-  }
 }

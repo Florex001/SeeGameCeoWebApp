@@ -5,7 +5,6 @@ import locale from 'antd/es/date-picker/locale/hu_HU';
 import axios from "axios";
 import { toast } from 'react-hot-toast';
 import Select from 'react-select'
-import { RawPurePanel } from 'antd/es/popover/PurePanel';
 
 function WorkshopGenerate({ setCreateWorkshop }) {
 
@@ -41,8 +40,11 @@ function WorkshopGenerate({ setCreateWorkshop }) {
 
     const [workshopName, setWorkshopName] = useState("");
     const [workshopId, setWorkshopId] = useState(0);
-
     const [expireDate, setExpireDate] = useState(new Date());
+
+    const handleDateChange = (date, dateString) => {
+        setExpireDate(date);
+    }
 
     const submitGenerate = () => {
         if (workshopName === "" || workshopId === "") {
@@ -74,11 +76,42 @@ function WorkshopGenerate({ setCreateWorkshop }) {
                     } else {
                         toast.success(response.data.message);
                         setCreateWorkshop(2);
+                        setIsModalOpen(false);
                     }
                 }
             })
         }
     }
+
+
+    const customStyles = {
+        control: (provided, state) => ({
+            ...provided,
+            borderColor: state.isFocused ? '#93BFCF' : provided.borderColor,
+            '&:hover': {
+                borderColor: state.isFocused ? '#93BFCF' : provided.borderColor,
+            },
+        }),
+        multiValue: (provided, state) => ({
+            ...provided,
+            backgroundColor: '#93BFCF',
+            borderRadius: '12px',
+            color: 'black',
+            boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'
+        }),
+        multiValueLabel: (provided, state) => ({
+            ...provided,
+            color: 'black',
+        }),
+        multiValueRemove: (provided, state) => ({
+            ...provided,
+            color: 'black',
+            ':hover': {
+                color: '#E06469',
+            },
+        }),
+    };
+
 
 
     return (
@@ -92,33 +125,36 @@ function WorkshopGenerate({ setCreateWorkshop }) {
                             width: 200,
                             height: 30,
                         }} />
-                        <p>(szerveren lévő műhelyed neve)</p>
+                        <span>(szerveren lévő műhelyed neve)</span>
                     </div>
                     <div className='workshop-create-input'>
                         <Input onChange={(e) => setWorkshopId(e.target.value)} placeholder='Műhely ID-ja' style={{
-                            width: 70,
+                            width: 100,
                             height: 30,
                         }} />
-                        <p>(szerveren lévő műhelyed ID-ja)</p>
+                        <span>(szerveren lévő műhelyed ID-ja)</span>
                     </div>
-                    <Select
-                        options={icNames}
-                        noOptionsMessage={() => "Nincs több lehetőség."}
-                        isMulti value={selectedIcNames}
-                        onChange={handleChange}
-                        placeholder="Add meg a dolgozók nevét!"
-                        onInputChange={handleInputChange}
-                        inputValue={inputValue}
-                        menuIsOpen={inputValue.length > 1}
-                    />
+                    <div className="worskhop-create-input">
+                        <Select
+                            options={icNames}
+                            noOptionsMessage={() => "Nincs több lehetőség."}
+                            isMulti value={selectedIcNames}
+                            onChange={handleChange}
+                            placeholder="Add meg a dolgozók nevét!"
+                            onInputChange={handleInputChange}
+                            inputValue={inputValue}
+                            menuIsOpen={inputValue.length > 1}
+                            styles={customStyles}
 
+                        />
+                    </div>
 
                     <div className='workshop-create-input'>
-                        <DatePicker locale={locale} style={{ marginTop: "0.5rem", marginRight: "0.5rem" }} size="medium" placeholder="Dátum kiválasztása" />
-                        <p>(lejárat dátuma)</p>
+                        <DatePicker onChange={handleDateChange} locale={locale} style={{ width: "175px", marginTop: "0.8rem", marginRight: "0.5rem" }} size="medium" placeholder="Dátum kiválasztása" />
+                        <span>(lejárat dátuma)</span>
                     </div>
-                    <div className='workshop-create-input'>
-                        <Button onClick={submitGenerate} type="primary" style={{ marginTop: '0.3rem' }}>Létrehozás</Button>
+                    <div className='workshop-create-submit'>
+                        <Button onClick={submitGenerate} style={{ marginTop: '0.3rem', backgroundColor: '#93BFCF', width: '100px' }}>Létrehozás</Button>
 
                     </div>
                 </div>
