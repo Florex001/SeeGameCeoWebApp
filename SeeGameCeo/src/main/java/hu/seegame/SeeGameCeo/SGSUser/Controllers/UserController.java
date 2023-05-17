@@ -5,6 +5,7 @@ import hu.seegame.SeeGameCeo.SGSUser.Others.Encrypt;
 import hu.seegame.SeeGameCeo.SGSUser.Repositories.UserRepository;
 import hu.seegame.SeeGameCeo.SGSUser.Services.UserService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,6 +58,39 @@ public class UserController {
 
         return bejelentkezett;
     }//bejelentkezés
+
+    @PostMapping("/logout")
+    public ResponseEntity<Object> logOut(HttpServletRequest request, HttpServletResponse response){
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null){
+            for (Cookie cookie : cookies){
+                if (cookie.getName().equals("user")){
+                    cookie.setPath("/");
+                    cookie.setMaxAge(0);
+                    response.addCookie(cookie);
+
+                    return new ResponseEntity<>(Collections.singletonMap("message", "Sikeres kijelentkezés."), HttpStatus.OK);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.UNAUTHORIZED);
+
+    }//kilépés
+
+    @GetMapping("/auth")
+    public ResponseEntity<Object> auth(HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("user")) {
+                    return new ResponseEntity<>(Collections.singletonMap("loggedin", true), HttpStatus.OK);
+                }
+            }
+        }
+        return new ResponseEntity<>(Collections.singletonMap("loggedin", false), HttpStatus.UNAUTHORIZED);
+    }
 
 
 }

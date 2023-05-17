@@ -41,7 +41,7 @@ public class JobV4Controller {
                 }
             }
         }
-        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.UNAUTHORIZED);
     }//az adott műhelyhez létre hoz egy munkát. egyszerre 2 aktiv munka lehet egy műhelyben
 
     @GetMapping("/getworkbyworkshop/{id}")
@@ -66,7 +66,7 @@ public class JobV4Controller {
             }
         }
 
-        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.UNAUTHORIZED);
     }//Műhelyhez tartozó munkák le kérdezése
 
 }

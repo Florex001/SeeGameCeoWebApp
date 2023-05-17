@@ -42,7 +42,7 @@ public class WorkshopV4Controller {
             }
         }
 
-        return new ResponseEntity<>(Collections.singletonMap("message", "Jelentkezz be."), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(Collections.singletonMap("message", "Jelentkezz be."), HttpStatus.UNAUTHORIZED);
 
     }//műhely létrehozás
 
@@ -68,7 +68,7 @@ public class WorkshopV4Controller {
                 }
             }
         }
-        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.UNAUTHORIZED);
     }//felhasználó saját műhelye
 
     @GetMapping("/workshopiworkin")
@@ -92,7 +92,7 @@ public class WorkshopV4Controller {
                 }
             }
         }
-        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.UNAUTHORIZED);
     }//felhasználó műhelye amiben dolgozik
 
 

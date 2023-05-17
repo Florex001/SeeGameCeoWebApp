@@ -22,7 +22,7 @@ public class KarakterV4Controller {
     @Autowired
     private KarakterV4Service karakterV4Service;
 
-    @PostMapping("/createcaracter")
+    @PostMapping("/createcharacter")
     public ResponseEntity<Object> createCharacter(@RequestBody KarakterV4 karakterV4, HttpServletRequest request){
 
         Cookie[] cookies = request.getCookies();
@@ -75,7 +75,7 @@ public class KarakterV4Controller {
                 }
             }
         }
-        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.UNAUTHORIZED);
     }//server sütit küld vissza ha kiválasztja a szervert és van karaktere különben létre kell hoznia egy karaktert hogy meg kapja a sütit
 
     @GetMapping("/getallicname")
@@ -97,6 +97,6 @@ public class KarakterV4Controller {
                 }
             }
         }
-        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.UNAUTHORIZED);
     }//ki listázza jsonba az összes ic nevet amivel regisztráltak
 }

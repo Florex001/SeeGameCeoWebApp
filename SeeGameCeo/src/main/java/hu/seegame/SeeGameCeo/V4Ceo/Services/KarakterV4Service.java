@@ -21,11 +21,11 @@ public class KarakterV4Service {
         KarakterV4 karakter = karakterV4Repository.findByIcnev(karakterV4.getIcnev());
 
         if (karakterByUser != null){
-            return new ResponseEntity<>(Collections.singletonMap("message", "Már van egy karaktered."), HttpStatus.OK);
+            return new ResponseEntity<>(Collections.singletonMap("error", "Már van egy karaktered."), HttpStatus.OK);
         }
 
         if (karakter != null){
-            return new ResponseEntity<>(Collections.singletonMap("message", "Már létezik egy ilyen karakter."), HttpStatus.OK);
+            return new ResponseEntity<>(Collections.singletonMap("error", "Már létezik egy ilyen karakter."), HttpStatus.OK);
         }
 
         karakterV4Repository.save(karakterV4);
