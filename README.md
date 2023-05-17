@@ -10,6 +10,14 @@
 
 * http://localhost:9000/api/user/login
 
+### Auth:
+
+* http://localhost:9000/api/user/auth
+
+### Kijelentkezés:
+
+* http://localhost:9000/api/user/logout
+
 
 
 ## See V4 elérések:
@@ -20,7 +28,7 @@
 
 ### Karakter hozzáadás:
 
-* http://localhost:9000/api/user/v4/createcaracter
+* http://localhost:9000/api/user/v4/createcharacter
 
 ### Ic nevek:
 
