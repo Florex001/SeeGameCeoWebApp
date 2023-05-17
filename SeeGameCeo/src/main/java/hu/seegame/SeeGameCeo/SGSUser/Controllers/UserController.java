@@ -69,9 +69,9 @@ public class UserController {
         if (cookies != null){
             for (Cookie cookie : cookies){
                 if (cookie.getName().equals("user")){
-                    Cookie myCookie = new Cookie("user", null);
-                    myCookie.setMaxAge(0);
-                    response.addCookie(myCookie);
+                    cookie.setMaxAge(0);
+                    cookie.setPath("/");
+                    response.addCookie(cookie);
 
                     return new ResponseEntity<>(Collections.singletonMap("message", "Sikeres kijelentkezés."), HttpStatus.OK);
                 }
