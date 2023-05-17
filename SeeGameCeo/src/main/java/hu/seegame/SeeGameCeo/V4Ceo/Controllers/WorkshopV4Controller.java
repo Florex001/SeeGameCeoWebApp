@@ -14,7 +14,7 @@ import java.util.Collections;
 
 @RestController
 @RequestMapping("/api/user/v4")
-@CrossOrigin(origins = "http://localhost:3000/", allowCredentials = "true")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class WorkshopV4Controller {
 
     @Autowired
@@ -42,7 +42,7 @@ public class WorkshopV4Controller {
             }
         }
 
-        return new ResponseEntity<>(Collections.singletonMap("message", "Jelentkezz be."), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(Collections.singletonMap("message", "Jelentkezz be."), HttpStatus.OK);
 
     }//műhely létrehozás
 
@@ -68,7 +68,7 @@ public class WorkshopV4Controller {
                 }
             }
         }
-        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
     }//felhasználó saját műhelye
 
     @GetMapping("/workshopiworkin")
@@ -92,7 +92,7 @@ public class WorkshopV4Controller {
                 }
             }
         }
-        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
     }//felhasználó műhelye amiben dolgozik
 
 

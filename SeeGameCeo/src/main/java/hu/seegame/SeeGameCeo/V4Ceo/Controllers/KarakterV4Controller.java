@@ -16,7 +16,7 @@ import java.util.Collections;
 
 @RestController
 @RequestMapping("/api/user/v4")
-@CrossOrigin(origins = "http://localhost:3000/", allowCredentials = "true")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class KarakterV4Controller {
 
     @Autowired
@@ -75,7 +75,7 @@ public class KarakterV4Controller {
                 }
             }
         }
-        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
     }//server sütit küld vissza ha kiválasztja a szervert és van karaktere különben létre kell hoznia egy karaktert hogy meg kapja a sütit
 
     @GetMapping("/getallicname")
@@ -97,6 +97,6 @@ public class KarakterV4Controller {
                 }
             }
         }
-        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
     }//ki listázza jsonba az összes ic nevet amivel regisztráltak
 }

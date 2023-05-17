@@ -14,7 +14,7 @@ import java.util.Collections;
 
 @RestController
 @RequestMapping("/api/user/v4")
-@CrossOrigin(origins = "http://localhost:3000/", allowCredentials = "true")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class JobV4Controller {
 
     @Autowired
@@ -41,7 +41,7 @@ public class JobV4Controller {
                 }
             }
         }
-        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
     }//az adott műhelyhez létre hoz egy munkát. egyszerre 2 aktiv munka lehet egy műhelyben
 
     @GetMapping("/getworkbyworkshop/{id}")
@@ -66,7 +66,7 @@ public class JobV4Controller {
             }
         }
 
-        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
     }//Műhelyhez tartozó munkák le kérdezése
 
 }

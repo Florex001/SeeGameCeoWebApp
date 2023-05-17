@@ -17,7 +17,7 @@ import java.util.Collections;
 
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin(origins = "http://localhost:3000/", allowCredentials = "true")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class UserController {
 
     @Autowired
@@ -52,6 +52,10 @@ public class UserController {
 
             Cookie cookie = new Cookie("user", encrypCookie);
             cookie.setHttpOnly(true);
+            response.setHeader("Set-Cookie", String.valueOf(cookie));
+            cookie.setDomain("localhost");
+            cookie.setPath("/");
+
             response.addCookie(cookie);
             return new ResponseEntity<>(Collections.singletonMap("message", "Sikeres bejelentkezés!"), HttpStatus.OK);
         }
@@ -65,9 +69,9 @@ public class UserController {
         if (cookies != null){
             for (Cookie cookie : cookies){
                 if (cookie.getName().equals("user")){
-                    cookie.setPath("/");
-                    cookie.setMaxAge(0);
-                    response.addCookie(cookie);
+                    Cookie myCookie = new Cookie("user", null);
+                    myCookie.setMaxAge(0);
+                    response.addCookie(myCookie);
 
                     return new ResponseEntity<>(Collections.singletonMap("message", "Sikeres kijelentkezés."), HttpStatus.OK);
                 }
@@ -79,7 +83,7 @@ public class UserController {
     }//kilépés
 
     @GetMapping("/auth")
-    public ResponseEntity<Object> auth(HttpServletRequest request){
+    public ResponseEntity<Object> auth(HttpServletRequest request, HttpServletResponse response){
         Cookie[] cookies = request.getCookies();
 
         if (cookies != null) {
@@ -89,7 +93,7 @@ public class UserController {
                 }
             }
         }
-        return new ResponseEntity<>(Collections.singletonMap("loggedin", false), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(Collections.singletonMap("loggedin", false), HttpStatus.OK);
     }
 
 
