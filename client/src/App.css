@@ -42,6 +42,7 @@ body {
   left: 0;
   right: 0;
   background-color: rgba(14, 29, 51, 0.093);
+  z-index: -1;
 }
 
 .gradient5[data-isOn="true"]
@@ -145,6 +146,45 @@ body {
   font-size: 4.2rem;
   margin: 0 auto;
   ;
+}
+
+.character-container {
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8rem;
+  font-size: 2rem;
+}
+
+.character-container span {
+  line-height: 1.2;
+}
+
+.character-container input {
+  margin-top: 0.5rem;
+  width: 300px;
+  padding: 10px 20px;
+  border-color: transparent;
+  border-bottom: 1px solid darkgrey;
+  background: transparent;
+}
+
+.character-container input:focus{
+  outline: none;
+  border-bottom: 1px solid #3cb88288;
+}
+
+.character-container input:hover{
+  outline: none;
+  border-bottom: 1px solid #3cb88288;
+}
+
+.character-container input::-webkit-input-placeholder {
+  padding-left: 5px;
+  font-size: 15px;
+  color: #3c3c3c;
 }
 
 .lobby-container {
@@ -537,6 +577,17 @@ body {
   padding: 0rem 0.3rem;
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.submit-character {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  background-color: #A0D8B3;
+  border-radius: 5px;
+  color: black;
+  padding: 0.1rem 0.6rem;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.224) 0px 5px 15px;
 }
 
 #gradient
