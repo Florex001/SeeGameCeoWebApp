@@ -34,7 +34,7 @@ public class FolyamatTMPV4Controller {
                         String userid = parts[0];
                         cookie.setHttpOnly(true);
 
-                        ResponseEntity<Object> hozzadas = folyamatTMPV4Service.createProcess(jobid, folyamatTMPV4);
+                        ResponseEntity<Object> hozzadas = folyamatTMPV4Service.createProcess(jobid, folyamatTMPV4, Integer.parseInt(userid));
 
                         return hozzadas;
                     }
@@ -58,7 +58,7 @@ public class FolyamatTMPV4Controller {
                         String userid = parts[0];
                         cookie.setHttpOnly(true);
 
-                        ResponseEntity<Object> folyamatok = folyamatTMPV4Service.getAllProcessByJob(jobid);
+                        ResponseEntity<Object> folyamatok = folyamatTMPV4Service.getAllProcessByJob(jobid, Integer.parseInt(userid));
 
                         return folyamatok;
                     }
@@ -82,7 +82,7 @@ public class FolyamatTMPV4Controller {
                         String userid = parts[0];
                         cookie.setHttpOnly(true);
 
-                        ResponseEntity<Object> deleteProcess = folyamatTMPV4Service.deleteProcess(processid);
+                        ResponseEntity<Object> deleteProcess = folyamatTMPV4Service.deleteProcess(processid, Integer.parseInt(userid));
 
                         return deleteProcess;
                     }
