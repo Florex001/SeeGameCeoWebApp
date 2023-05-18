@@ -1,8 +1,8 @@
 package hu.seegame.SeeGameCeo.V4Ceo.Controllers;
 
 import hu.seegame.SeeGameCeo.SGSUser.Others.Encrypt;
-import hu.seegame.SeeGameCeo.V4Ceo.Models.WorkshopV4;
-import hu.seegame.SeeGameCeo.V4Ceo.Services.WorkshopV4Services;
+import hu.seegame.SeeGameCeo.V4Ceo.Models.FolyamatTMPV4;
+import hu.seegame.SeeGameCeo.V4Ceo.Services.FolyamatTMPV4Service;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,88 +15,13 @@ import java.util.Collections;
 @RestController
 @RequestMapping("/api/user/v4")
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
-public class WorkshopV4Controller {
+public class FolyamatTMPV4Controller {
 
     @Autowired
-    private WorkshopV4Services workshopV4Services;
+    private FolyamatTMPV4Service folyamatTMPV4Service;
 
-    @PostMapping("/createworkshop")
-    public ResponseEntity<Object> createWorkshop(@RequestBody WorkshopV4 workshopV4, HttpServletRequest request){
-        Cookie[] cookies = request.getCookies();
-
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("user")) {
-                    String encryptedValue = cookie.getValue();
-                    String decryptedValue = Encrypt.decrypt(encryptedValue);
-                    String[] parts = decryptedValue.split("-");
-                    if (parts.length == 3) {
-                        String id = parts[0];
-                        cookie.setHttpOnly(true);
-
-                        ResponseEntity<Object> hozzadas = workshopV4Services.createWorkshop(workshopV4, Integer.parseInt(id));
-
-                        return hozzadas;
-                    }
-                }
-            }
-        }
-
-        return new ResponseEntity<>(Collections.singletonMap("message", "Jelentkezz be."), HttpStatus.OK);
-
-    }//műhely létrehozás
-
-    @GetMapping("/getmyworkshop")
-    public ResponseEntity<Object> getMyWorkshop(HttpServletRequest request){
-
-        Cookie[] cookies = request.getCookies();
-
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("user")) {
-                    String encryptedValue = cookie.getValue();
-                    String decryptedValue = Encrypt.decrypt(encryptedValue);
-                    String[] parts = decryptedValue.split("-");
-                    if (parts.length == 3) {
-                        cookie.setHttpOnly(true);
-                        String id = parts[0];
-
-                        ResponseEntity<Object> sajatmuhelye = workshopV4Services.getMyWorkshop(Integer.parseInt(id));
-
-                        return sajatmuhelye;
-                    }
-                }
-            }
-        }
-        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
-    }//felhasználó saját műhelye
-
-    @GetMapping("/workshopiworkin")
-    public ResponseEntity<Object> getWorkshopiworkin(HttpServletRequest request){
-        Cookie[] cookies = request.getCookies();
-
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("user")) {
-                    String encryptedValue = cookie.getValue();
-                    String decryptedValue = Encrypt.decrypt(encryptedValue);
-                    String[] parts = decryptedValue.split("-");
-                    if (parts.length == 3) {
-                        cookie.setHttpOnly(true);
-                        String id = parts[0];
-
-                        ResponseEntity<Object> ittdolgozik = workshopV4Services.getWorkshopiworkin(Integer.parseInt(id));
-
-                        return ittdolgozik ;
-                    }
-                }
-            }
-        }
-        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
-    }//felhasználó műhelye amiben dolgozik
-
-    @GetMapping("/getworkerbyworkshop/{id}")
-    public ResponseEntity<Object> getWorkerByWorkshop(@PathVariable int id, HttpServletRequest request){
+    @PostMapping("/createprocess/{jobid}")
+    public ResponseEntity<Object> createProcess(@PathVariable int jobid, @RequestBody FolyamatTMPV4 folyamatTMPV4, HttpServletRequest request){
         Cookie[] cookies = request.getCookies();
 
         if (cookies != null) {
@@ -109,16 +34,62 @@ public class WorkshopV4Controller {
                         String userid = parts[0];
                         cookie.setHttpOnly(true);
 
-                        ResponseEntity<Object> muhelybendolgozok = workshopV4Services.getWorkerByWorkshop(id);
+                        ResponseEntity<Object> hozzadas = folyamatTMPV4Service.createProcess(jobid, folyamatTMPV4);
 
-                        return muhelybendolgozok;
+                        return hozzadas;
                     }
                 }
             }
         }
-
         return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
-    }//Munkások lekérdezése az adott műhelyhez
+    }//Folyamatok ideiglenes eltárolása véglegesítésig
 
+    @GetMapping("/getprocess/{jobid}")
+    public ResponseEntity<Object> getProcessByJob(@PathVariable int jobid, HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("user")) {
+                    String encryptedValue = cookie.getValue();
+                    String decryptedValue = Encrypt.decrypt(encryptedValue);
+                    String[] parts = decryptedValue.split("-");
+                    if (parts.length == 3) {
+                        String userid = parts[0];
+                        cookie.setHttpOnly(true);
+
+                        ResponseEntity<Object> folyamatok = folyamatTMPV4Service.getAllProcessByJob(jobid);
+
+                        return folyamatok;
+                    }
+                }
+            }
+        }
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
+    }//Munkához tartozó folyamatok lekérése
+
+    @DeleteMapping("/deleteprocess/{processid}")
+    private ResponseEntity<Object> deleteProcess(@PathVariable int processid, HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("user")) {
+                    String encryptedValue = cookie.getValue();
+                    String decryptedValue = Encrypt.decrypt(encryptedValue);
+                    String[] parts = decryptedValue.split("-");
+                    if (parts.length == 3) {
+                        String userid = parts[0];
+                        cookie.setHttpOnly(true);
+
+                        ResponseEntity<Object> deleteProcess = folyamatTMPV4Service.deleteProcess(processid);
+
+                        return deleteProcess;
+                    }
+                }
+            }
+        }
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
+    }//munkafolyamat törlése
 
 }

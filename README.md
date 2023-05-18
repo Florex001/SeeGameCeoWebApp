@@ -56,3 +56,15 @@
 ### Műhelyben dolgozók lekérdezése:
 
 * http://localhost:9000/api/user/v4/getworkerbyworkshop/{muhelyid} :x:
+
+### Folyamat hozzáadása a munkához:
+
+* http://localhost:9000/api/user/v4/createprocess/{jobid} :x:
+
+### Folyamat lekérdezése az adott munkához:
+
+* http://localhost:9000/api/user/v4/getprocess/{jobid} :x:
+
+### Folyamat törlése:
+
+* http://localhost:9000/api/user/v4/deleteprocess/{folyamatid} :x:

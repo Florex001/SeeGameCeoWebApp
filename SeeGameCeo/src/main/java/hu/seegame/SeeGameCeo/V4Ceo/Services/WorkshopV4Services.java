@@ -10,9 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class WorkshopV4Services {
@@ -172,5 +170,46 @@ public class WorkshopV4Services {
         return new ResponseEntity<>(Collections.singletonMap("message", workshops), HttpStatus.OK);
 
     }//Felhasználó műhelye amiben dolgozik
+
+    public ResponseEntity<Object> getWorkerByWorkshop(int id){
+        Optional<WorkshopV4> workshopV4 = workshopV4Repository.findById(id);
+
+        if (workshopV4.isEmpty()){
+            return new ResponseEntity<>(Collections.singletonMap("error", "Nincs ilyen műhely"), HttpStatus.OK);
+        }
+
+        if (workshopV4.get().getStatus().equals("aktiv")){
+            ArrayList<String> dolgozokestulajnev = new ArrayList<>();
+            dolgozokestulajnev.add(workshopV4.get().getDolgozo1());
+            dolgozokestulajnev.add(workshopV4.get().getDolgozo2());
+            dolgozokestulajnev.add(workshopV4.get().getDolgozo3());
+            dolgozokestulajnev.add(workshopV4.get().getDolgozo4());
+            dolgozokestulajnev.add(workshopV4.get().getDolgozo5());
+            dolgozokestulajnev.add(workshopV4.get().getDolgozo6());
+            dolgozokestulajnev.add(workshopV4.get().getDolgozo7());
+            dolgozokestulajnev.add(workshopV4.get().getDolgozo8());
+            dolgozokestulajnev.add(workshopV4.get().getDolgozo9());
+            dolgozokestulajnev.add(workshopV4.get().getDolgozo10());
+            dolgozokestulajnev.add(workshopV4.get().getDolgozo11());
+            dolgozokestulajnev.add(workshopV4.get().getDolgozo12());
+            dolgozokestulajnev.add(workshopV4.get().getTulajNev());
+
+            ArrayList<Map<String, String>> lista = new ArrayList<>();
+
+            for (String elem : dolgozokestulajnev){
+                if (elem != null){
+                    Map<String, String> dolgozokMap = new HashMap<>();
+                    dolgozokMap.put("label", elem);
+                    dolgozokMap.put("value", elem);
+                    lista.add(dolgozokMap);
+                }
+            }
+
+            return new ResponseEntity<>(Collections.singletonMap("message", lista), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(Collections.singletonMap("error", "Nem aktív a műhely."), HttpStatus.OK);
+
+    }//Munkások lekérdezése az adott műhelyhez
 
 }
