@@ -47,7 +47,7 @@
 
 ### Műhelyhez munka hozzáadás
 
-* http://localhost:9000/api/user/v4/createjob/{műhelyid} :x:
+* http://localhost:9000/api/user/v4/createjob/{műhelyid} :white_check_mark:
 
 ### Műhelyhez tartozó munkák lekérdezése:
 
