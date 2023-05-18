@@ -4,56 +4,55 @@
 
 ### Regisztráció:
 
-* http://localhost:9000/api/user/registration &#10003
+* http://localhost:9000/api/user/registration :white_check_mark:
 
 ### Bejelentkezés:
 
-* http://localhost:9000/api/user/login &#10003
+* http://localhost:9000/api/user/login :white_check_mark:
 
 ### Auth:
 
-* http://localhost:9000/api/user/auth &#10003
+* http://localhost:9000/api/user/auth :white_check_mark:
 
 ### Kijelentkezés:
 
-* http://localhost:9000/api/user/logout &#10003
-
+* http://localhost:9000/api/user/logout :white_check_mark:
 
 
 ## See V4 elérések:
 
 ### Szerver választás:
 
-* http://localhost:9000/api/user/v4/chooseserver &#10003
+* http://localhost:9000/api/user/v4/chooseserver :white_check_mark:
 
 ### Karakter hozzáadás:
 
-* http://localhost:9000/api/user/v4/createcharacter &#10003
+* http://localhost:9000/api/user/v4/createcharacter :white_check_mark:
 
 ### Ic nevek:
 
-* http://localhost:9000/api/user/v4/getallicname &#10003
+* http://localhost:9000/api/user/v4/getallicname :white_check_mark:
 
 ### Műhely hozzáadása:
 
-* http://localhost:9000/api/user/v4/createworkshop &#10003
+* http://localhost:9000/api/user/v4/createworkshop :white_check_mark:
 
 ### Felhasználó saját műhelye:
 
-* http://localhost:9000/api/user/v4/getmyworkshop &#10003
+* http://localhost:9000/api/user/v4/getmyworkshop :white_check_mark:
 
 ### Felhasználó műhelyei amiben dolgozik:
 
-* http://localhost:9000/api/user/v4/workshopiworkin &#10003
+* http://localhost:9000/api/user/v4/workshopiworkin :white_check_mark:
 
 ### Műhelyhez munka hozzáadás
 
-* http://localhost:9000/api/user/v4/createjob/{műhelyid} &#x2717
+* http://localhost:9000/api/user/v4/createjob/{műhelyid} :x:
 
 ### Műhelyhez tartozó munkák lekérdezése:
 
-* http://localhost:9000/api/user/v4/getworkbyworkshop/{műhelyid} &#x2717
+* http://localhost:9000/api/user/v4/getworkbyworkshop/{műhelyid} :x:
 
 ### Műhelyben dolgozók lekérdezése:
 
-* http://localhost:9000/api/user/v4/getworkerbyworkshop/{muhelyid} &#x2717
+* http://localhost:9000/api/user/v4/getworkerbyworkshop/{muhelyid} :x:
