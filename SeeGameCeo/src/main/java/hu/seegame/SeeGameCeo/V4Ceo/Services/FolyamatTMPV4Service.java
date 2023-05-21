@@ -43,8 +43,6 @@ public class FolyamatTMPV4Service {
         List<WorkshopV4> ove = workshopV4Repository.findByTulajNev(icnev);
         Optional<JobV4> jobV4 = jobV4Repository.findById(jobid);
 
-        System.out.println(icnev);
-
         if (jobV4.isEmpty()){
             return new ResponseEntity<>(Collections.singletonMap("error", "Nincs ilyen munka."), HttpStatus.OK);
         }
@@ -53,7 +51,6 @@ public class FolyamatTMPV4Service {
             for (WorkshopV4 elem : muhelybedolgozik){
                 if (elem.getId() == jobV4.get().getMuhelyId() && elem.getStatus().equals("aktiv")){
                     folyamatTMPV4.setMunkaid(jobid);
-                    System.out.println("it");
                     System.out.println(folyamatTMPV4);
 
                     folyamatTMPV4Repository.save(folyamatTMPV4);
@@ -66,7 +63,6 @@ public class FolyamatTMPV4Service {
             for (WorkshopV4 elem : ove){
                 if (elem.getStatus().equals("aktiv") && elem.getId() == jobV4.get().getMuhelyId() && elem.getTulajNev().equals(icnev)){
                     folyamatTMPV4.setMunkaid(jobid);
-                    System.out.println("itt");
                     System.out.println(folyamatTMPV4);
 
                     folyamatTMPV4Repository.save(folyamatTMPV4);
