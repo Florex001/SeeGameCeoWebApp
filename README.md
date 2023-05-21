@@ -68,3 +68,7 @@
 ### Folyamat törlése:
 
 * http://localhost:9000/api/user/v4/deleteprocess/{folyamatid} :x:
+
+### Fizetést számolja ki:
+
+* http://localhost:9000/api/user/v4/pay/{munkaid} :x:
