@@ -2,11 +2,27 @@ import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { LaptopOutlined } from '@ant-design/icons'
 import WorkshopContent from './WorkshopContent';
+import axios from 'axios';
 
 function WorkshopSelect({ myWorkshop }) {
 
   const [workerCount, setWorkerCount] = useState(0);
   const [lejarat, setLejarat] = useState(0);
+
+  const [works, setWorks] = useState([]);
+  const [selected, setSelected] = useState(0); //ide majd a munka idje
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:9000/api/user/v4/getworkbyworkshop/${myWorkshop.id}`)
+      .then((response) => {
+        if (response.data.message) {
+          setWorks(response.data.message);
+        }else {
+          setSelected(-1);
+        }
+      });
+  }, []);
 
   useEffect(() => {
 
@@ -69,7 +85,7 @@ function WorkshopSelect({ myWorkshop }) {
               <span>Tagok: {workerCount}db</span>
             </div>
             <div className='widget third'>
-              <span>Folyamatban lévő autók: 2db</span>
+              <span>Folyamatban lévő autók: {works.length}db</span>
             </div>
             <div className='widget four'>
               <span>Lejárat: {lejarat}nap</span>
@@ -91,7 +107,7 @@ function WorkshopSelect({ myWorkshop }) {
       <div onClick={(e) => e.stopPropagation()} className='container'>
         {isOpen &&
           <motion.div>
-            <WorkshopContent />
+            <WorkshopContent selected={selected} setSelected={setSelected} works={works} workshopId={myWorkshop.id}/>
           </motion.div>
         }
       </div>

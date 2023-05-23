@@ -85,6 +85,13 @@ function Home() {
   }, [createWorkshop, isHaveCharacter]);
   //useEffect vége
 
+  useEffect(() => {
+    const isHaveCharacterReq = JSON.parse(
+      localStorage.getItem("isHaveCharacter")
+    );
+      setIsHaveCharacter(isHaveCharacterReq);
+  })
+
   const [selected, setSelected] = useState(true);
   const [selectedVisible, setSelectedVisible] = useState(0);
 
@@ -178,7 +185,6 @@ function Home() {
     <>
       {lobbyShow === 3 && (
         <AnimatePresence>
-          <span onClick={logout}>logout</span>
           <motion.div data-ison={isOn} className="overlay2"></motion.div>
           <motion.div
             layout
@@ -285,7 +291,6 @@ function Home() {
 
       {lobbyShow < 3 && (
         <AnimatePresence>
-          <span onClick={logout}>logout</span>
           <motion.div layout className="home-container">
             <motion.div
               className="home-header"
