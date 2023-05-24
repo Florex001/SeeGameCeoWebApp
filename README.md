@@ -51,19 +51,19 @@
 
 ### Műhelyhez tartozó munkák lekérdezése:
 
-* http://localhost:9000/api/user/v4/getworkbyworkshop/{műhelyid} :x:
+* http://localhost:9000/api/user/v4/getworkbyworkshop/{műhelyid} :white_check_mark:
 
 ### Műhelyben dolgozók lekérdezése:
 
-* http://localhost:9000/api/user/v4/getworkerbyworkshop/{muhelyid} :x:
+* http://localhost:9000/api/user/v4/getworkerbyworkshop/{muhelyid} :white_check_mark:
 
 ### Folyamat hozzáadása a munkához:
 
-* http://localhost:9000/api/user/v4/createprocess/{jobid} :x:
+* http://localhost:9000/api/user/v4/createprocess/{jobid} :white_check_mark:
 
 ### Folyamat lekérdezése az adott munkához:
 
-* http://localhost:9000/api/user/v4/getprocess/{jobid} :x:
+* http://localhost:9000/api/user/v4/getprocess/{jobid} :white_check_mark:
 
 ### Folyamat törlése:
 
