@@ -69,4 +69,29 @@ public class JobV4Controller {
         return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
     }//Műhelyhez tartozó munkák le kérdezése
 
+    @GetMapping("/getcompletedworkbyworkshop/{id}")
+    public ResponseEntity<Object> getWorkByWorkshopDeAktiv(@PathVariable int id, HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("user")) {
+                    String encryptedValue = cookie.getValue();
+                    String decryptedValue = Encrypt.decrypt(encryptedValue);
+                    String[] parts = decryptedValue.split("-");
+                    if (parts.length == 3) {
+                        String userid = parts[0];
+                        cookie.setHttpOnly(true);
+
+                        ResponseEntity<Object> munkak = jobV4Service.getJobByMuhelyDeAktiv(id, Integer.parseInt(userid));
+
+                        return munkak;
+                    }
+                }
+            }
+        }
+
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
+    }//Műhelyhez tartozó munkák le kérdezése
+
 }

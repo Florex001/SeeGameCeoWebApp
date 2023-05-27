@@ -43,4 +43,51 @@ public class PayV4Controller {
         return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
     }//ki számolja a munkán dolgozók fizetését
 
+    @GetMapping("/pay/{jobid}")
+    public ResponseEntity<Object> fizetesekAMunkahoz(@PathVariable int jobid, HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("user")) {
+                    String encryptedValue = cookie.getValue();
+                    String decryptedValue = Encrypt.decrypt(encryptedValue);
+                    String[] parts = decryptedValue.split("-");
+                    if (parts.length == 3) {
+                        String userid = parts[0];
+                        cookie.setHttpOnly(true);
+
+                        ResponseEntity<Object> fizetesek = payV4Service.getPay(jobid);
+
+                        return fizetesek;
+                    }
+                }
+            }
+        }
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
+    }//ki listázza az adott munkához tartozó fizetéseket
+
+    @PostMapping("/ispay/{fizetesid}")
+    public ResponseEntity<Object> fizetvevane(@PathVariable int fizetesid, HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("user")) {
+                    String encryptedValue = cookie.getValue();
+                    String decryptedValue = Encrypt.decrypt(encryptedValue);
+                    String[] parts = decryptedValue.split("-");
+                    if (parts.length == 3) {
+                        cookie.setHttpOnly(true);
+
+                        ResponseEntity<Object> fizetesek = payV4Service.fizetveVanE(fizetesid);
+
+                        return fizetesek;
+                    }
+                }
+            }
+        }
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
+    }//ha rá kattint a ki listázottra akkor a fizetése true vagy false lesz
+
 }

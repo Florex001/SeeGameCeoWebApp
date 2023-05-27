@@ -202,4 +202,72 @@ public class JobV4Service {
         return new ResponseEntity<>(Collections.singletonMap("error", "Nem dolgozol a műhelyben, vagy a műhely törölve lett."), HttpStatus.OK);
     }//Műhelyhez tartozó munkák lekérdezése
 
+    public ResponseEntity<Object> getJobByMuhelyDeAktiv(int muhelyid, int userid){
+
+        KarakterV4 karakterV4 = karakterV4Repository.findByUserid(userid);
+
+        String icnev = karakterV4.getIcnev();
+
+        List<WorkshopV4> muhelybedolgozik = workshopV4Repository.findByDolgozo1OrDolgozo2OrDolgozo3OrDolgozo4OrDolgozo5OrDolgozo6OrDolgozo7OrDolgozo8OrDolgozo9OrDolgozo10OrDolgozo11OrDolgozo12(icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev);
+        Optional<WorkshopV4> workshop = workshopV4Repository.findById(muhelyid);
+        List<WorkshopV4> ove = workshopV4Repository.findByTulajNev(icnev);
+        List<JobV4> talalt = jobV4Repository.findByMuhelyId(muhelyid);
+
+
+        if (workshop.isEmpty()){
+            return new ResponseEntity<>(Collections.singletonMap("error", "Nincs ilyen műhely."), HttpStatus.OK);
+        }
+
+        WorkshopV4 muhelyben = null;
+
+        if (!muhelybedolgozik.isEmpty()){
+            for (WorkshopV4 elem : muhelybedolgozik){
+                if (elem.getId() == muhelyid && elem.getStatus().equals("aktiv")){
+                    muhelyben = elem;
+                }
+            }
+        }
+
+        if (muhelyben != null && muhelyben.getId() == muhelyid && muhelyben.getStatus().equals("aktiv")) {
+
+            List<JobV4> deaktivmunkak = new ArrayList<>();
+
+            for (JobV4 elem: talalt){
+                if (elem.getStatus().equals("deaktiv")){
+                    deaktivmunkak.add(elem);
+                }
+            }
+
+
+            return new ResponseEntity<>(Collections.singletonMap("message", deaktivmunkak), HttpStatus.OK);
+        }
+
+        WorkshopV4 sajat = null;
+
+        if (ove != null){
+            for (WorkshopV4 elem : ove){
+                if (elem.getStatus().equals("aktiv")){
+                    sajat = elem;
+                }
+            }
+        }
+
+
+        if (sajat != null && sajat.getId() == muhelyid && sajat.getStatus().equals("aktiv")){
+
+            List<JobV4> deaktivmunkak = new ArrayList<>();
+
+            for (JobV4 elem: talalt){
+                if (elem.getStatus().equals("deaktiv")){
+                    deaktivmunkak.add(elem);
+                }
+            }
+
+
+            return new ResponseEntity<>(Collections.singletonMap("message", deaktivmunkak), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(Collections.singletonMap("error", "Nem dolgozol a műhelyben, vagy a műhely törölve lett."), HttpStatus.OK);
+    }//Műhelyhez tartozó munkák lekérdezése
+
 }

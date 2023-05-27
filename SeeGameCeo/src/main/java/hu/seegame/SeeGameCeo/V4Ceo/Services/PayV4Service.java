@@ -9,6 +9,7 @@ import hu.seegame.SeeGameCeo.V4Ceo.Repositories.JobV4Repository;
 import hu.seegame.SeeGameCeo.V4Ceo.Repositories.KarakterV4Repository;
 import hu.seegame.SeeGameCeo.V4Ceo.Repositories.PayV4Repository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Optionals;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -129,5 +130,30 @@ public class PayV4Service {
 
         return new ResponseEntity<>(Collections.singletonMap("error", "Nincs ilyen munka."), HttpStatus.OK);
     }//kiszámolja a fizetését azoknak akik dolgoztak az adott munkán
+
+    public ResponseEntity<Object> getPay(int munkaid){
+
+        List<PayV4> fizetesek = payV4Repository.findByMunkaid(munkaid);
+
+        return new ResponseEntity<>(Collections.singletonMap("message", fizetesek), HttpStatus.OK);
+    }//ki listázza az adott munkához tartozó fizetéseket
+
+    public ResponseEntity<Object> fizetveVanE(int payid){
+
+        Optional<PayV4> fizetes = payV4Repository.findById(payid);
+
+        if (fizetes.isPresent()){
+            PayV4 fizetesObj = fizetes.get();
+            if (fizetesObj.isFizetve()){
+                fizetesObj.setFizetve(false);
+                payV4Repository.save(fizetesObj);
+            }else {
+                fizetesObj.setFizetve(true);
+                payV4Repository.save(fizetesObj);
+            }
+        }
+        return new ResponseEntity<>(Collections.singletonMap("message", "Sikeresen módosítva."), HttpStatus.OK);
+
+    }//ha rá kattint a ki listázottra akkor a fizetése true vagy false lesz
 
 }
