@@ -72,3 +72,15 @@
 ### Fizetést számolja ki:
 
 * http://localhost:9000/api/user/v4/pay/{munkaid} :x:
+
+### Elvégzett munkákat listázza ki:
+
+* http://localhost:9000/api/user/v4/getcompletedworkbyworkshop/{muhelyid} :x:
+
+### Elvégzett munkákhoz tartozó fizetések:
+
+* http://localhost:9000/api/user/v4/pay/{munkaid} :x:
+
+### Ha elvégzett munkához tartozó fizetést meg kapta a munkás akkor a fizetve true érték lesz:
+
+* http://localhost:9000/api/user/v4/ispay/{fizetesid} :x:
