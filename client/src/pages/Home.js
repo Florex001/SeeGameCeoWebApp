@@ -173,13 +173,17 @@ function Home() {
       });
   };
 
-  const logout = () => { 
+  const handleLogout = () => { 
     axios.post("http://localhost:9000/api/user/logout").then((response) => {
       localStorage.clear();
       navigate("/");
       //<span onClick={logout}>logout</span>
     });
   };
+
+  const handleLobby = () => {
+    setLobbyShow(3);
+  }
 
   return (
     <>
@@ -299,8 +303,20 @@ function Home() {
                 transition: { duration: 0.5, delay: 0 },
               }}
             >
+              <div className="logo-h1-container">
               <motion.img src="https://i.postimg.cc/NMmBcfvQ/v4-manager.png"></motion.img>
               <span>SeeGameCeo {selectedLobby === 1 && "LV"}</span>
+              </div>
+              <div className="logout-container">
+              <div class="dropdown">
+             <button class="dropbtn">Műveletek</button>
+            <div class="dropdown-content">
+             <span onClick={handleLobby}>Lobby</span>
+             <span onClick={handleLogout}>Kijelentkezés</span>
+             </div>
+             </div>
+
+              </div>
             </motion.div>
             <div data-ison={isOn} className="overlay3 gradient5"></div>
 

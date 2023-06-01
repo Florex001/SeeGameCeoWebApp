@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { CarOutlined, PlusOutlined } from "@ant-design/icons";
+import { CarOutlined, PlusOutlined, CloseOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { Button, Modal } from "antd";
 import toast from "react-hot-toast";
 import Select from "react-select";
 
-function Car({ selected, setSelected, id, work }) {
+function Car({ selected, setSelected, id, work, added, setAdded }) {
+
+  axios.defaults.withCredentials = true;
+  
   const [processes, setProcesses] = useState([]);
   const [icNames, setIcNames] = useState([]);
   const [selectedIcNames, setSelectedIcNames] = useState([]);
@@ -73,7 +76,7 @@ function Car({ selected, setSelected, id, work }) {
           setProcesses(rendezett);
         }
       });
-  }, [selectedIcNames]);
+  }, [selectedIcNames, added]);
 
   useEffect(() => {
     axios
@@ -106,9 +109,31 @@ function Car({ selected, setSelected, id, work }) {
     })
   };
 
+  const handleDone = () => {
+    axios.post(`http://localhost:9000/api/user/v4/pay/${work.id}`).then((response) => {
+      if(response.data.message) {
+        console.log(response.data.message);
+        setAdded(!added)
+      }else {
+        console.log(response.data.error);
+      }
+    })
+  }
+
+  const handleProcessDelete = (processId) => {
+    axios.delete(`http://localhost:9000/api/user/v4/deleteprocess/${processId}`).then((response) => {
+      if(response.data.message) {
+        toast.success(response.data.message);
+        setSelectedIcNames()
+      } else {
+        toast.error(response.data.error)
+      }
+    })
+  }
+
   return (
     <div
-      onClick={() => setSelected(id)}
+
       className={
         selected === id ? "car-container car-selected" : "car-container"
       }
@@ -280,6 +305,9 @@ function Car({ selected, setSelected, id, work }) {
         {processes.map((item) => {
           return (
             <div className="process-container">
+              <div className="delete-process-icon" onClick={() => handleProcessDelete(item.id)}>
+              <CloseOutlined />
+              </div>
               <div className="process-name" id={`gradient${item.folyamat}`}>
                 {item.folyamat === 1 && <span>Csiszolás</span>}
                 {item.folyamat === 2 && <span>Alapozás</span>}
@@ -303,7 +331,7 @@ function Car({ selected, setSelected, id, work }) {
           <span>folyamat hozzáadás.</span>
         </motion.div>
         <hr className="hr-style"></hr>
-        <motion.div whileHover={{ scale: 1.1 }} className="submit-processes">
+        <motion.div whileHover={{ scale: 1.1 }} onClick={handleDone} className="submit-processes">
           Véglegesítés
         </motion.div>
       </div>

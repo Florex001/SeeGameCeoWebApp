@@ -7,7 +7,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { ChromePicker } from "react-color";
 
-function WorkshopContent({ workshopId, works, selected, setSelected }) {
+function WorkshopContent({ workshopId, works, selected, setSelected, setAdded, added }) {
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -66,6 +66,7 @@ function WorkshopContent({ workshopId, works, selected, setSelected }) {
             setModalVisible(false);
             setCarName("");
             setCarPrice("");
+            setAdded(!added)
           }
         });
     }
@@ -123,6 +124,8 @@ function WorkshopContent({ workshopId, works, selected, setSelected }) {
                 selected={selected}
                 setSelected={setSelected}
                 work={work}
+                added={added}
+                setAdded={setAdded}
               />
             );
           })}

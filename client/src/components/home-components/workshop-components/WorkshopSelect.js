@@ -8,6 +8,7 @@ function WorkshopSelect({ myWorkshop }) {
 
   const [workerCount, setWorkerCount] = useState(0);
   const [lejarat, setLejarat] = useState(0);
+  const [added, setAdded] = useState(false);
 
   const [works, setWorks] = useState([]);
   const [selected, setSelected] = useState(0); //ide majd a munka idje
@@ -22,7 +23,7 @@ function WorkshopSelect({ myWorkshop }) {
           setSelected(-1);
         }
       });
-  }, []);
+  }, [added]);
 
   useEffect(() => {
 
@@ -107,7 +108,7 @@ function WorkshopSelect({ myWorkshop }) {
       <div onClick={(e) => e.stopPropagation()} className='container'>
         {isOpen &&
           <motion.div>
-            <WorkshopContent selected={selected} setSelected={setSelected} works={works} workshopId={myWorkshop.id}/>
+            <WorkshopContent selected={selected} setSelected={setSelected} setAdded={setAdded} added={added} works={works} workshopId={myWorkshop.id}/>
           </motion.div>
         }
       </div>
