@@ -67,11 +67,11 @@
 
 ### Folyamat törlése:
 
-* http://localhost:9000/api/user/v4/deleteprocess/{folyamatid} :x:
+* http://localhost:9000/api/user/v4/deleteprocess/{folyamatid} :white_check_mark:
 
 ### Fizetést számolja ki:
 
-* http://localhost:9000/api/user/v4/pay/{munkaid} :x:
+* http://localhost:9000/api/user/v4/pay/{munkaid} :white_check_mark:
 
 ### Elvégzett munkákat listázza ki:
 
