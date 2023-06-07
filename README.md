@@ -84,3 +84,7 @@
 ### Ha elvégzett munkához tartozó fizetést meg kapta a munkás akkor a fizetve true érték lesz:
 
 * http://localhost:9000/api/user/v4/ispay/{fizetesid} :x:
+
+### Műhely hosszabítása:
+
+* http://localhost:9000/api/user/v4/workshopextension/{muhelyid} :x:

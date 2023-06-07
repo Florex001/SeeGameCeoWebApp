@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
@@ -211,5 +212,24 @@ public class WorkshopV4Services {
         return new ResponseEntity<>(Collections.singletonMap("error", "Nem aktív a műhely."), HttpStatus.OK);
 
     }//Munkások lekérdezése az adott műhelyhez
+
+    public ResponseEntity<Object> workshopExtension(int id){
+        Optional<WorkshopV4> workshopV4 = workshopV4Repository.findById(id);
+        WorkshopV4 muhely = workshopV4.get();
+
+        LocalDateTime time = muhely.getLejarat();
+
+        LocalDateTime now = LocalDateTime.now();
+
+        if (now.until(time, ChronoUnit.DAYS) <= 1){
+            LocalDateTime modositott = time.plusWeeks(1);
+            muhely.setLejarat(modositott);
+            workshopV4Repository.save(muhely);
+            return new ResponseEntity<>(Collections.singletonMap("message", "Sikeresen meghosszabítottad a műhyelyedet."), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(Collections.singletonMap("error", "Még nem tudod meg hosszabítani a műhelyedet."), HttpStatus.OK);
+
+    }
 
 }

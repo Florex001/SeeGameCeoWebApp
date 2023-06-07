@@ -120,5 +120,30 @@ public class WorkshopV4Controller {
         return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
     }//Munkások lekérdezése az adott műhelyhez
 
+    @PostMapping("/workshopextension/{id}")
+    public ResponseEntity<Object> workshopExtension(@PathVariable int id, HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("user")) {
+                    String encryptedValue = cookie.getValue();
+                    String decryptedValue = Encrypt.decrypt(encryptedValue);
+                    String[] parts = decryptedValue.split("-");
+                    if (parts.length == 3) {
+                        String userid = parts[0];
+                        cookie.setHttpOnly(true);
+
+                        ResponseEntity<Object> muhelyhosszabbitas = workshopV4Services.workshopExtension(id);
+
+                        return muhelyhosszabbitas;
+                    }
+                }
+            }
+        }
+
+        return new ResponseEntity<>(Collections.singletonMap("error", "Jelentkezz be."), HttpStatus.OK);
+    }
+
 
 }
