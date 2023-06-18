@@ -135,6 +135,11 @@ public class PayV4Service {
 
         List<PayV4> fizetesek = payV4Repository.findByMunkaid(munkaid);
 
+        for (PayV4 elem : fizetesek){
+            Optional<KarakterV4> kari = karakterV4Repository.findById(Integer.valueOf(elem.getIcnev()));
+            elem.setIcnev(kari.get().getIcnev());
+        }
+
         return new ResponseEntity<>(Collections.singletonMap("message", fizetesek), HttpStatus.OK);
     }//ki listázza az adott munkához tartozó fizetéseket
 

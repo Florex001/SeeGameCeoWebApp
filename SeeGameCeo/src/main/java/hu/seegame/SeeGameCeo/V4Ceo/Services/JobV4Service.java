@@ -32,7 +32,7 @@ public class JobV4Service {
 
         KarakterV4 karakterV4 = karakterV4Repository.findByUserid(userid);
 
-        String icnev = karakterV4.getIcnev();
+        String icnev = String.valueOf(karakterV4.getId());
 
         List<WorkshopV4> muhelybedolgozik = workshopV4Repository.findByDolgozo1OrDolgozo2OrDolgozo3OrDolgozo4OrDolgozo5OrDolgozo6OrDolgozo7OrDolgozo8OrDolgozo9OrDolgozo10OrDolgozo11OrDolgozo12(icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev);
         Optional<WorkshopV4> workshop = workshopV4Repository.findById(muhelyid);
@@ -138,7 +138,7 @@ public class JobV4Service {
 
         KarakterV4 karakterV4 = karakterV4Repository.findByUserid(userid);
 
-        String icnev = karakterV4.getIcnev();
+        String icnev = String.valueOf(karakterV4.getId());
 
         List<WorkshopV4> muhelybedolgozik = workshopV4Repository.findByDolgozo1OrDolgozo2OrDolgozo3OrDolgozo4OrDolgozo5OrDolgozo6OrDolgozo7OrDolgozo8OrDolgozo9OrDolgozo10OrDolgozo11OrDolgozo12(icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev);
         Optional<WorkshopV4> workshop = workshopV4Repository.findById(muhelyid);
@@ -206,7 +206,7 @@ public class JobV4Service {
 
         KarakterV4 karakterV4 = karakterV4Repository.findByUserid(userid);
 
-        String icnev = karakterV4.getIcnev();
+        String icnev = String.valueOf(karakterV4.getId());
 
         List<WorkshopV4> muhelybedolgozik = workshopV4Repository.findByDolgozo1OrDolgozo2OrDolgozo3OrDolgozo4OrDolgozo5OrDolgozo6OrDolgozo7OrDolgozo8OrDolgozo9OrDolgozo10OrDolgozo11OrDolgozo12(icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev);
         Optional<WorkshopV4> workshop = workshopV4Repository.findById(muhelyid);

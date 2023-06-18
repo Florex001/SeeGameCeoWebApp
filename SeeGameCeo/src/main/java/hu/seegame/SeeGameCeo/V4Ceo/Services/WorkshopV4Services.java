@@ -27,7 +27,7 @@ public class WorkshopV4Services {
 
         KarakterV4 karakter = karakterV4Repository.findByUserid(userid);
 
-        workshopV4.setTulajNev(karakter.getIcnev());
+        workshopV4.setTulajNev(String.valueOf(karakter.getId()));
         workshopV4.setStatus("aktiv");
 
         List<WorkshopV4> muhelyidvan = workshopV4Repository.findByMuhelyid(workshopV4.getMuhelyid());
@@ -71,6 +71,50 @@ public class WorkshopV4Services {
             return new ResponseEntity<>(Collections.singletonMap("error", "A mai dátumtol maximum 1 hét lehet a lejárat."), HttpStatus.OK);
         }
 
+        ArrayList<String> dologzok = new ArrayList<>();
+
+        dologzok.addAll(Arrays.asList(
+                workshopV4.getDolgozo1(),
+                workshopV4.getDolgozo2(),
+                workshopV4.getDolgozo3(),
+                workshopV4.getDolgozo4(),
+                workshopV4.getDolgozo5(),
+                workshopV4.getDolgozo6(),
+                workshopV4.getDolgozo7(),
+                workshopV4.getDolgozo8(),
+                workshopV4.getDolgozo9(),
+                workshopV4.getDolgozo10(),
+                workshopV4.getDolgozo11(),
+                workshopV4.getDolgozo12()
+        ));
+
+        int index = 0;
+
+        for (String elem : dologzok){
+            if (elem != null){
+                KarakterV4 kari =karakterV4Repository.findByIcnev(elem);
+                if (kari != null){
+                    dologzok.set(index, String.valueOf(kari.getId()));
+                }
+            }
+            index++;
+        }
+
+
+
+        workshopV4.setDolgozo1(dologzok.get(0));
+        workshopV4.setDolgozo2(dologzok.get(1));
+        workshopV4.setDolgozo3(dologzok.get(2));
+        workshopV4.setDolgozo4(dologzok.get(3));
+        workshopV4.setDolgozo5(dologzok.get(4));
+        workshopV4.setDolgozo6(dologzok.get(5));
+        workshopV4.setDolgozo7(dologzok.get(6));
+        workshopV4.setDolgozo8(dologzok.get(7));
+        workshopV4.setDolgozo9(dologzok.get(8));
+        workshopV4.setDolgozo10(dologzok.get(9));
+        workshopV4.setDolgozo11(dologzok.get(10));
+        workshopV4.setDolgozo12(dologzok.get(11));
+
         workshopV4Repository.save(workshopV4);
         return new ResponseEntity<>(Collections.singletonMap("message", "Sikeres műhely hozzáadás."), HttpStatus.OK);
 
@@ -80,7 +124,7 @@ public class WorkshopV4Services {
 
         KarakterV4 karakterV4 = karakterV4Repository.findByUserid(tulajid);
 
-        List<WorkshopV4> workshop = workshopV4Repository.findByTulajNev(karakterV4.getIcnev());
+        List<WorkshopV4> workshop = workshopV4Repository.findByTulajNev(String.valueOf(karakterV4.getId()));
 
         WorkshopV4 sajat = new WorkshopV4();
 
@@ -146,7 +190,7 @@ public class WorkshopV4Services {
 
         KarakterV4 felhasznalo = karakterV4Repository.findByUserid(userid);
 
-        String ignev = felhasznalo.getIcnev();
+        String ignev = String.valueOf(felhasznalo.getId());
 
         List<WorkshopV4> ittdolgozik = workshopV4Repository.findByDolgozo1OrDolgozo2OrDolgozo3OrDolgozo4OrDolgozo5OrDolgozo6OrDolgozo7OrDolgozo8OrDolgozo9OrDolgozo10OrDolgozo11OrDolgozo12(ignev, ignev, ignev, ignev, ignev, ignev, ignev, ignev, ignev, ignev, ignev, ignev);
 
@@ -199,9 +243,13 @@ public class WorkshopV4Services {
 
             for (String elem : dolgozokestulajnev){
                 if (elem != null){
+                    Optional<KarakterV4> kari = karakterV4Repository.findById(Integer.valueOf(elem));
+
+                    String karakternev = kari.get().getIcnev();
+
                     Map<String, String> dolgozokMap = new HashMap<>();
-                    dolgozokMap.put("label", elem);
-                    dolgozokMap.put("value", elem);
+                    dolgozokMap.put("label", karakternev);
+                    dolgozokMap.put("value", karakternev);
                     lista.add(dolgozokMap);
                 }
             }

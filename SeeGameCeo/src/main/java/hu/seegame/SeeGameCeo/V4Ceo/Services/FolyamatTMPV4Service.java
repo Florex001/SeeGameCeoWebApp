@@ -37,7 +37,7 @@ public class FolyamatTMPV4Service {
 
         KarakterV4 karakterV4 = karakterV4Repository.findByUserid(userid);
 
-        String icnev = karakterV4.getIcnev();
+        String icnev = String.valueOf(karakterV4.getId());
 
         List<WorkshopV4> muhelybedolgozik = workshopV4Repository.findByDolgozo1OrDolgozo2OrDolgozo3OrDolgozo4OrDolgozo5OrDolgozo6OrDolgozo7OrDolgozo8OrDolgozo9OrDolgozo10OrDolgozo11OrDolgozo12(icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev);
         List<WorkshopV4> ove = workshopV4Repository.findByTulajNev(icnev);
@@ -52,6 +52,10 @@ public class FolyamatTMPV4Service {
                 if (elem.getId() == jobV4.get().getMuhelyId() && elem.getStatus().equals("aktiv")){
                     folyamatTMPV4.setMunkaid(jobid);
 
+                    KarakterV4 ingamename = karakterV4Repository.findByIcnev(folyamatTMPV4.getIcnev());
+
+                    folyamatTMPV4.setIcnev(String.valueOf(ingamename.getId()));
+
                     folyamatTMPV4Repository.save(folyamatTMPV4);
                     return new ResponseEntity<>(Collections.singletonMap("message", "Sikeresen hozzáadott folyamat."), HttpStatus.OK);
                 }
@@ -62,6 +66,10 @@ public class FolyamatTMPV4Service {
             for (WorkshopV4 elem : ove){
                 if (elem.getStatus().equals("aktiv") && elem.getId() == jobV4.get().getMuhelyId() && elem.getTulajNev().equals(icnev)){
                     folyamatTMPV4.setMunkaid(jobid);
+
+                    KarakterV4 ingamename = karakterV4Repository.findByIcnev(folyamatTMPV4.getIcnev());
+
+                    folyamatTMPV4.setIcnev(String.valueOf(ingamename.getId()));
 
                     folyamatTMPV4Repository.save(folyamatTMPV4);
                     return new ResponseEntity<>(Collections.singletonMap("message", "Sikeresen hozzáadott folyamat."), HttpStatus.OK);
@@ -79,7 +87,7 @@ public class FolyamatTMPV4Service {
 
         List<FolyamatTMPV4> folyamatok = folyamatTMPV4Repository.findByMunkaid(jobid);
 
-        String icnev = karakterV4.getIcnev();
+        String icnev = String.valueOf(karakterV4.getId());
 
         List<WorkshopV4> muhelybedolgozik = workshopV4Repository.findByDolgozo1OrDolgozo2OrDolgozo3OrDolgozo4OrDolgozo5OrDolgozo6OrDolgozo7OrDolgozo8OrDolgozo9OrDolgozo10OrDolgozo11OrDolgozo12(icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev);
         List<WorkshopV4> ove = workshopV4Repository.findByTulajNev(icnev);
@@ -92,6 +100,15 @@ public class FolyamatTMPV4Service {
         if (!muhelybedolgozik.isEmpty()){
             for (WorkshopV4 elem : muhelybedolgozik){
                 if (elem.getId() == jobV4.get().getMuhelyId() && elem.getStatus().equals("aktiv")){
+
+                    for (FolyamatTMPV4 elem1 : folyamatok){
+                        String igname = elem1.getIcnev();
+
+                        Optional<KarakterV4> name = karakterV4Repository.findById(Integer.valueOf(igname));
+
+                        elem1.setIcnev(name.get().getIcnev());
+                    }
+
                     return new ResponseEntity<>(Collections.singletonMap("message", folyamatok), HttpStatus.OK);
                 }
             }
@@ -100,6 +117,15 @@ public class FolyamatTMPV4Service {
         if (ove != null){
             for (WorkshopV4 elem : ove){
                 if (elem.getStatus().equals("aktiv") && elem.getId() == jobV4.get().getMuhelyId() && elem.getTulajNev().equals(icnev)){
+
+                    for (FolyamatTMPV4 elem1 : folyamatok){
+                        String igname = elem1.getIcnev();
+
+                        Optional<KarakterV4> name = karakterV4Repository.findById(Integer.valueOf(igname));
+
+                        elem1.setIcnev(name.get().getIcnev());
+                    }
+
                     return new ResponseEntity<>(Collections.singletonMap("message", folyamatok), HttpStatus.OK);
                 }
             }
@@ -120,13 +146,11 @@ public class FolyamatTMPV4Service {
         if (!folyamatok.isEmpty()){
             int jobid = folyamatok.get().getMunkaid();
 
-            String icnev = karakterV4.getIcnev();
+            String icnev = String.valueOf(karakterV4.getId());
 
             List<WorkshopV4> muhelybedolgozik = workshopV4Repository.findByDolgozo1OrDolgozo2OrDolgozo3OrDolgozo4OrDolgozo5OrDolgozo6OrDolgozo7OrDolgozo8OrDolgozo9OrDolgozo10OrDolgozo11OrDolgozo12(icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev, icnev);
             List<WorkshopV4> ove = workshopV4Repository.findByTulajNev(icnev);
             Optional<JobV4> jobV4 = jobV4Repository.findById(jobid);
-
-            System.out.println(icnev);
 
             if (folyamatTMPV4.isEmpty()){
                 return new ResponseEntity<>(Collections.singletonMap("error", "Nem törölheted mert nincs ilyen munka folyamat."), HttpStatus.OK);
